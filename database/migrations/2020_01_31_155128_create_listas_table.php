@@ -15,7 +15,7 @@ class CreateListasTable extends Migration
     {
         Schema::create('listas', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->int('idUsuarioCreador')->unique();
+            $table->integer('idUsuarioCreador')->unique();
             $table->string('titulo');
             $table->string('descripcion');
             $table->string('password');

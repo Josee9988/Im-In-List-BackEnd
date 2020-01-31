@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Listas extends Model
 {
-    //
+    protected $guarded = [];
 }
