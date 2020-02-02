@@ -18,7 +18,7 @@ class CreateListasTable extends Migration
             $table->integer('idUsuarioCreador')->unique();
             $table->string('titulo');
             $table->string('descripcion');
-            $table->string('password');
+            $table->string('passwordLista');
             $table->json('elementos');
             $table->timestamps();
         });
