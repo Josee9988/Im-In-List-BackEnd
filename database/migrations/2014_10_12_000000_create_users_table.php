@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->tinyInteger('role');
             $table->json('listasCreadas');
-            $table->json('listasParticipiantes');
+            $table->json('listasParticipantes');
             $table->rememberToken();
             $table->timestamps();
         });
