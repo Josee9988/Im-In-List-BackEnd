@@ -5,9 +5,8 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Listas;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
-class usuariosController extends Controller
+class listasController extends Controller
 {
     /**
      * Display a listing of the resource.

@@ -32,6 +32,7 @@ class usuariosController extends Controller
         $usuario->email = $request->email;
         $usuario->password = Hash::make($request->password);
         return $usuario->save();
+        
     }
 
     /**
