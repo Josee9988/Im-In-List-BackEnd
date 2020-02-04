@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UsersTableSeeder extends Seeder
 {
@@ -17,6 +18,7 @@ class UsersTableSeeder extends Seeder
             'name' => 'borja',
             'email' => 'borja@gmail.com',
             'password' => Hash::make('1234'),
+            'api_token' => Str::random(80),
             'listasCreadas'=>str_replace("'", "\'", json_encode([1])),
             'listasParticipantes'=>str_replace("'", "\'", json_encode([1,2])),
             'role' => 0,
@@ -26,6 +28,7 @@ class UsersTableSeeder extends Seeder
             'name' => 'jose',
             'email' => 'jose@gmail.com',
             'password' => Hash::make('1234'),
+            'api_token' => Str::random(80),
             'listasCreadas'=>str_replace("'", "\'", json_encode([2])),
             'listasParticipantes'=>str_replace("'", "\'", json_encode([1,2])),
             'role' => 0,
