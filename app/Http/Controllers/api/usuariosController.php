@@ -30,8 +30,10 @@ class usuariosController extends Controller
         $usuario = new User();
         $usuario->name = $request->name;
         $usuario->email = $request->email;
+        $usuario->email = $request->email;
         $usuario->password = Hash::make($request->password);
-        return $usuario->save();
+        $usuario->save();
+        return  $usuario;
         
     }
 
@@ -42,8 +44,9 @@ class usuariosController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        return User::find($id);
+    {   
+        $usuario = User::find($id);
+        return $usuario;
     }
 
 
@@ -54,13 +57,11 @@ class usuariosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id,Request $request)
     {
         $usuario = User::find($id);
-        $usuario->name = $request->name;
-        $usuario->email = $request->email;
-        $usuario->password = Hash::make($request->password);
-        return $usuario->save();
+        $usuario->fill($request->all())->save();
+        return  $usuario;
     }
 
     /**
@@ -71,6 +72,7 @@ class usuariosController extends Controller
      */
     public function destroy($id)
     {
-        return User::where('id', $id)->delete();
+        $usuario = $this->show($id);
+        return $usuario;
     }
 }
