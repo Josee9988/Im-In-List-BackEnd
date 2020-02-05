@@ -2,27 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class listasController extends Controller
 {
-
-
-
+    /**
+     * @var
+     */
+    protected $user;
 
     /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
+     * TaskController constructor.
      */
-    protected function validator(array $data)
+    public function __construct()
     {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+        $this->user = JWTAuth::parseToken()->authenticate();
     }
 }

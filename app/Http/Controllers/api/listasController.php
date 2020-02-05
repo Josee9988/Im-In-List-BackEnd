@@ -15,7 +15,9 @@ class listasController extends Controller
      */
     public function index()
     {
-        return Listas::all();
+        $listas = $this->user->listas()->get(['titulo'])->toArray();
+
+        return $listas;
     }
 
     /**
@@ -32,7 +34,8 @@ class listasController extends Controller
         $lista->descripcion = $request->descripcion;
         $lista->passwordLista = $request->passwordLista;
         $lista->elementos = $request->elementos;
-        return $lista->save();
+        $lista->save();
+        return $lista;
     }
 
     /**
@@ -43,7 +46,16 @@ class listasController extends Controller
      */
     public function show($id)
     {
-        return Listas::find($id);
+
+
+        $lista = Listas::find($id);
+        if (!$lista) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Sorry, task with id ' . $id . ' cannot be found.'
+            ], 400);
+        }
+        return $lista;
     }
 
 
@@ -54,15 +66,10 @@ class listasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id, Request $request)
     {
         $lista = Listas::find($id);
-        $lista->idUsuarioCreador = $request->idUsuarioCreador;
-        $lista->titulo = $request->titulo;
-        $lista->descripcion = $request->descripcion;
-        $lista->passwordLista = $request->passwordLista;
-        $lista->elementos = $request->elementos;
-        return $lista->save();
+        $lista->fill($request->all())->save();
     }
 
     /**
@@ -73,6 +80,8 @@ class listasController extends Controller
      */
     public function destroy($id)
     {
-        return Listas::where('id', $id)->delete();
+        $lista = Listas::where('id', $id)->delete();
+
+        return $lista;
     }
 }
