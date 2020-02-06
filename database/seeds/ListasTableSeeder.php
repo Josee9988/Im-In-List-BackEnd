@@ -14,19 +14,19 @@ class ListasTableSeeder extends Seeder
     public function run()
     {
         DB::table('listas')->insert([
-            'idUsuarioCreador' => 1,
+            'user_id' => 1,
             'titulo' => 'Lista Borja',
-            'descripcion'=> 'La lista de Borja',
+            /*'descripcion'=> 'La lista de Borja',
             'passwordLista' => Hash::make('1234'),
-            'elementos'=>str_replace("'", "\'", json_encode(['Comprar platanos','Comprar Melocotones'])),
+            'elementos'=>str_replace("'", "\'", json_encode(['Comprar platanos','Comprar Melocotones'])),*/
         ]);
 
         DB::table('listas')->insert([
-            'idUsuarioCreador' => 2,
+            'user_id' => 2,
             'titulo' => 'Lista Jose',
-            'descripcion'=> 'La lista de Jose',
+            /*'descripcion'=> 'La lista de Jose',
             'passwordLista' => Hash::make('1234'),
-            'elementos'=>str_replace("'", "\'", json_encode(['Comprar agua','Comprar lapices'])),
+            'elementos'=>str_replace("'", "\'", json_encode(['Comprar agua','Comprar lapices'])),*/
         ]);
     }
 }
