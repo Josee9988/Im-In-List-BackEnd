@@ -18,9 +18,9 @@ class CreateListasTable extends Migration
             $table->bigInteger('idUsuarioCreador')->unsigned()->unique();
             $table->foreign('idUsuarioCreador')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->string('titulo');
-            $table->string('descripcion');
+            /*$table->string('descripcion');
             $table->string('passwordLista');
-            $table->json('elementos');
+            $table->json('elementos')->nullable();*/
             $table->timestamps();
         });
 
