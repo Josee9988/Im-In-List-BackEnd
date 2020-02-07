@@ -15,7 +15,7 @@ class listasController extends Controller
     protected $user;
 
     /**
-     * TaskController constructor.
+     * ListasController constructor.
      */
     public function __construct()
     {
@@ -29,8 +29,7 @@ class listasController extends Controller
      */
     public function index()
     {
-        $listas = $this->user->listas()->get(['titulo','descripcion','passwordLista','elementos'])->toArray();
-
+        $listas = $this->user->listas()->get(['titulo', 'descripcion', 'passwordLista', 'elementos'])->toArray();
         return $listas;
     }
 
@@ -50,13 +49,12 @@ class listasController extends Controller
 
         if ($this->user->listas()->save($lista)) {
             return response()->json([
-                'success' => true,
-                'lista' => $lista
+                'message' => 'Lista creada correctamente',
+                'lista' => $lista,
             ]);
         } else {
             return response()->json([
-                'success' => false,
-                'message' => 'Sorry, task could not be added.'
+                'message' => 'Error la lista no se ha creado',
             ], 500);
         }
     }
@@ -69,18 +67,17 @@ class listasController extends Controller
      */
     public function show($id)
     {
-
-
         $lista = Listas::find($id);
-        if (!$lista) {
+
+        // - En caso de id erronea
+        if (!$id || !$lista) {
             return response()->json([
-                'success' => false,
-                'message' => 'Sorry, task with id ' . $id . ' cannot be found.'
+                'message' => 'Error lista con el ' . $id . ' no se ha encontrado',
             ], 400);
         }
+
         return $lista;
     }
-
 
     /**
      * Update the specified resource in storage.
@@ -91,12 +88,13 @@ class listasController extends Controller
      */
     public function update($id, Request $request)
     {
+
         $lista = $this->user->listas()->find($id);
 
-        if (!$lista) {
+        // - En caso de id erronea
+        if (!$id || !$lista) {
             return response()->json([
-                'success' => false,
-                'message' => 'Sorry, task with id ' . $id . ' cannot be found.'
+                'message' => 'Error la lista con el ' . $id . ' no se ha modificado o encontrado',
             ], 400);
         }
 
@@ -104,13 +102,12 @@ class listasController extends Controller
 
         if ($updated) {
             return response()->json([
-                'success' => true,
-                'lista' => $lista
+                'message' => 'Lista modificada correctamente',
+                'lista' => $lista,
             ]);
         } else {
             return response()->json([
-                'success' => false,
-                'message' => 'Sorry, task could not be updated.'
+                'message' => 'Error la lista no se ha creado',
             ], 500);
         }
     }
@@ -125,21 +122,20 @@ class listasController extends Controller
     {
         $lista = $this->user->listas()->find($id);
 
-        if (!$lista) {
+        // - En caso de id erronea
+        if (!$lista || !$id) {
             return response()->json([
-                'success' => false,
-                'message' => 'Sorry, task with id ' . $id . ' cannot be found.'
+                'message' => 'Error la lista no se ha encontrado',
             ], 400);
         }
 
         if ($lista->delete()) {
             return response()->json([
-                'success' => true
+                'message' => 'Lista eliminada correctamente',
             ]);
         } else {
             return response()->json([
-                'success' => false,
-                'message' => 'Task could not be deleted.'
+                'message' => 'Error la lista no se ha eliminado',
             ], 500);
         }
     }
