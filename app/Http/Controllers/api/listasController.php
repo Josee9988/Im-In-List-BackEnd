@@ -34,6 +34,26 @@ class listasController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $lista = Listas::find($id);
+
+        // - En caso de id erronea
+        if (!$id || !$lista) {
+            return response()->json([
+                'message' => 'Error lista con el ' . $id . ' no se ha encontrado',
+            ], 400);
+        }
+
+        return $lista;
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -57,26 +77,6 @@ class listasController extends Controller
                 'message' => 'Error la lista no se ha creado',
             ], 500);
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $lista = Listas::find($id);
-
-        // - En caso de id erronea
-        if (!$id || !$lista) {
-            return response()->json([
-                'message' => 'Error lista con el ' . $id . ' no se ha encontrado',
-            ], 400);
-        }
-
-        return $lista;
     }
 
     /**
