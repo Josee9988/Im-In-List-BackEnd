@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 
 class usuariosController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +17,31 @@ class usuariosController extends Controller
      */
     public function index()
     {
-        return User::all();
+
+        $users = User::all();
+        return $users;
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+
+        $usuario = User::find($id);
+
+        // - En caso de id erronea
+        if (!$id || !$usuario) {
+            return response()->json([
+                'message' => 'Error usuario con el ' . $id . ' no se ha encontrado',
+            ], 400);
+        }
+
+        return $usuario;
+
     }
 
     /**
@@ -30,25 +55,23 @@ class usuariosController extends Controller
         $usuario = new User();
         $usuario->name = $request->name;
         $usuario->email = $request->email;
-        $usuario->email = $request->email;
         $usuario->password = Hash::make($request->password);
-        $usuario->save();
-        return  $usuario;
-        
-    }
+        $usuario->role = $request->role;
+        $usuario->listasCreadas = $request->listasCreadas;
+        $usuario->listasParticipantes = $request->listasParticipantes;
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {   
-        $usuario = User::find($id);
-        return $usuario;
-    }
+        if ($usuario->save()) {
+            return response()->json([
+                'message' => 'Usuario creado correctamente',
+                'user' => $usuario,
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Error el usuariono se ha creado',
+            ], 500);
+        }
 
+    }
 
     /**
      * Update the specified resource in storage.
@@ -57,11 +80,29 @@ class usuariosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update($id,Request $request)
+    public function update($id, Request $request)
     {
         $usuario = User::find($id);
-        $usuario->fill($request->all())->save();
-        return  $usuario;
+
+        // - En caso de id erronea
+        if (!$id || !$usuario) {
+            return response()->json([
+                'message' => 'Error la usuario con el ' . $id . ' no se ha modificado o encontrado',
+            ], 400);
+        }
+
+        $updated = $usuario->fill($request->all())->save();
+
+        if ($updated) {
+            return response()->json([
+                'message' => 'usuario modificado correctamente',
+                'user' => $usuario,
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Error el usuario no se ha creado',
+            ], 500);
+        }
     }
 
     /**
@@ -73,6 +114,23 @@ class usuariosController extends Controller
     public function destroy($id)
     {
         $usuario = $this->show($id);
-        return $usuario;
+
+        // - En caso de id erronea
+        if (!$usuario || !$id) {
+            return response()->json([
+                'message' => 'Error la usuario no se ha encontrado',
+            ], 400);
+        }
+
+        if ($usuario->delete()) {
+            return response()->json([
+                'message' => 'usuario eliminada correctamente',
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Error el usuario no se ha eliminado',
+            ], 500);
+        }
+
     }
 }
