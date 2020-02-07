@@ -13,11 +13,11 @@ class User extends Authenticatable implements JWTSubject
 
     /**
      * The attributes that are mass assignable.
-     * 'role', 'listasCreadas', 'listasParticipiantes', 'api_token'
+     * 
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password'
+        'name', 'email', 'password','role', 'listasCreadas', 'listasParticipiantes'
     ];
 
     /**

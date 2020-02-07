@@ -5,9 +5,23 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Listas;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class listasController extends Controller
 {
+    /**
+     * @var
+     */
+    protected $user;
+
+    /**
+     * TaskController constructor.
+     */
+    public function __construct()
+    {
+        $this->user = JWTAuth::parseToken()->authenticate();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +29,7 @@ class listasController extends Controller
      */
     public function index()
     {
-        $listas = $this->user->listas()->get(['titulo'])->toArray();
+        $listas = $this->user->listas()->get(['titulo','descripcion','passwordLista','elementos'])->toArray();
 
         return $listas;
     }
@@ -29,13 +43,22 @@ class listasController extends Controller
     public function store(Request $request)
     {
         $lista = new Listas();
-        $lista->idUsuarioCreador = $request->idUsuarioCreador;
         $lista->titulo = $request->titulo;
         $lista->descripcion = $request->descripcion;
         $lista->passwordLista = $request->passwordLista;
         $lista->elementos = $request->elementos;
-        $lista->save();
-        return $lista;
+
+        if ($this->user->listas()->save($lista)) {
+            return response()->json([
+                'success' => true,
+                'lista' => $lista
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Sorry, task could not be added.'
+            ], 500);
+        }
     }
 
     /**
@@ -68,8 +91,28 @@ class listasController extends Controller
      */
     public function update($id, Request $request)
     {
-        $lista = Listas::find($id);
-        $lista->fill($request->all())->save();
+        $lista = $this->user->listas()->find($id);
+
+        if (!$lista) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Sorry, task with id ' . $id . ' cannot be found.'
+            ], 400);
+        }
+
+        $updated = $lista->fill($request->all())->save();
+
+        if ($updated) {
+            return response()->json([
+                'success' => true,
+                'lista' => $lista
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Sorry, task could not be updated.'
+            ], 500);
+        }
     }
 
     /**
@@ -80,8 +123,24 @@ class listasController extends Controller
      */
     public function destroy($id)
     {
-        $lista = Listas::where('id', $id)->delete();
+        $lista = $this->user->listas()->find($id);
 
-        return $lista;
+        if (!$lista) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Sorry, task with id ' . $id . ' cannot be found.'
+            ], 400);
+        }
+
+        if ($lista->delete()) {
+            return response()->json([
+                'success' => true
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Task could not be deleted.'
+            ], 500);
+        }
     }
 }

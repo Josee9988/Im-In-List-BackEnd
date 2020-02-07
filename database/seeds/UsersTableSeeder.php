@@ -31,5 +31,6 @@ class UsersTableSeeder extends Seeder
             'listasParticipantes'=>str_replace("'", "\'", json_encode([1,2])),
             'role' => 0,
         ]);
+
     }
 }

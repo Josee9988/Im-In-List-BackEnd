@@ -14,7 +14,7 @@ class ListasTableSeeder extends Seeder
     public function run()
     {
         DB::table('listas')->insert([
-            'idUsuarioCreador' => 1,
+            'user_id' => 1,
             'titulo' => 'Lista Borja',
             'descripcion'=> 'La lista de Borja',
             'passwordLista' => Hash::make('1234'),
@@ -22,7 +22,7 @@ class ListasTableSeeder extends Seeder
         ]);
 
         DB::table('listas')->insert([
-            'idUsuarioCreador' => 2,
+            'user_id' => 2,
             'titulo' => 'Lista Jose',
             'descripcion'=> 'La lista de Jose',
             'passwordLista' => Hash::make('1234'),
