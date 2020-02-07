@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Hash;
 class usuariosController extends Controller
 {
 
-
     /**
      * Display a listing of the resource.
      *
