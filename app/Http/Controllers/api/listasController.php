@@ -29,7 +29,7 @@ class listasController extends Controller
      */
     public function index()
     {
-        $listas = $this->user->listas()->get(['titulo'])->toArray();
+        $listas = $this->user->listas()->get(['titulo','descripcion','passwordLista','elementos'])->toArray();
 
         return $listas;
     }
@@ -44,9 +44,9 @@ class listasController extends Controller
     {
         $lista = new Listas();
         $lista->titulo = $request->titulo;
-        /*$lista->descripcion = $request->descripcion;
+        $lista->descripcion = $request->descripcion;
         $lista->passwordLista = $request->passwordLista;
-        $lista->elementos = $request->elementos;*/
+        $lista->elementos = $request->elementos;
 
         if ($this->user->listas()->save($lista)) {
             return response()->json([
@@ -104,7 +104,8 @@ class listasController extends Controller
 
         if ($updated) {
             return response()->json([
-                'success' => true
+                'success' => true,
+                'lista' => $lista
             ]);
         } else {
             return response()->json([

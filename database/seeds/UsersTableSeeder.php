@@ -18,8 +18,8 @@ class UsersTableSeeder extends Seeder
             'name' => 'borja',
             'email' => 'borja@gmail.com',
             'password' => Hash::make('1234'),
-            /*'listasCreadas'=>str_replace("'", "\'", json_encode([1])),
-            'listasParticipantes'=>str_replace("'", "\'", json_encode([1,2])),*/
+            'listasCreadas'=>str_replace("'", "\'", json_encode([1])),
+            'listasParticipantes'=>str_replace("'", "\'", json_encode([1,2])),
             'role' => 0,
         ]);
 
@@ -27,8 +27,8 @@ class UsersTableSeeder extends Seeder
             'name' => 'jose',
             'email' => 'jose@gmail.com',
             'password' => Hash::make('1234'),
-            /*'listasCreadas'=>str_replace("'", "\'", json_encode([2])),
-            'listasParticipantes'=>str_replace("'", "\'", json_encode([1,2])),*/
+            'listasCreadas'=>str_replace("'", "\'", json_encode([2])),
+            'listasParticipantes'=>str_replace("'", "\'", json_encode([1,2])),
             'role' => 0,
         ]);
 
