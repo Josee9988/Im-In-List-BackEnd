@@ -21,18 +21,13 @@ class APIController extends Controller
      */
     public function login(Request $request)
     {
-        $input = $request->only('email', 'password');
-        $token = null;
-
-        /*       $input = $request->only('email', 'password');
-        $token = null;
         $inputs = Request::json()->all();
-        $user = $inputs['email'];*/
-
-        if (!$token = JWTAuth::attempt($input)) {
+        $token = null;
+        
+        if (!$token = JWTAuth::attempt($inputs)) {
             return response()->json([
                 'success' => false,
-                'message' => 'Invalid Email or Password',
+                'message' => '- Error, Mail o Password incorrectos',
             ], 401);
         }
 
