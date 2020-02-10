@@ -67,7 +67,7 @@ class APIController extends Controller
      * @param RegistrationFormRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register(RegistrationFormRequest $request)
+    public function register(Request $request)
     {
         $user = new User();
         $user->name = $request->name;
@@ -75,11 +75,13 @@ class APIController extends Controller
         $user->password = bcrypt($request->password);
         $user->role = 1;
         $user->save();
+
         /*
         if ($this->loginAfterSignUp) {
         return $this->login($request);
         }
         */
+
         return response()->json([
             'success' => true,
             'data' => $user,
