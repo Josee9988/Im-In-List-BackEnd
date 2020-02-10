@@ -2,25 +2,11 @@
 
 namespace App\Http\Controllers\api;
 
-use App\Http\Controllers\Controller;
 use App\Listas;
 use Illuminate\Http\Request;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
-class listasController extends Controller
+class listasController extends protectedUserController
 {
-    /**
-     * @var
-     */
-    protected $user;
-
-    /**
-     * ListasController constructor.
-     */
-    public function __construct()
-    {
-        $this->user = JWTAuth::parseToken()->authenticate();
-    }
 
     /**
      * Display a listing of the resource.
