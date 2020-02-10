@@ -19,7 +19,7 @@ class listasController extends Controller
      */
     public function __construct()
     {
-        //$this->user = JWTAuth::parseToken()->authenticate();
+        $this->user = JWTAuth::parseToken()->authenticate();
     }
 
     /**
