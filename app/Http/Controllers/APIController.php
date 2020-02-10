@@ -27,7 +27,7 @@ class APIController extends Controller
         if (!$token = JWTAuth::attempt($input)) {
             return response()->json([
                 'success' => false,
-                'message' => 'Invalid Email or Password',
+                'message' => '- Error, password o email',
             ], 401);
         }
 
@@ -73,6 +73,7 @@ class APIController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
+        $user->role = 1;
         $user->save();
         /*
         if ($this->loginAfterSignUp) {
