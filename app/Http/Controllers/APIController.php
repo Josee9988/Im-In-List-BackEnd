@@ -76,12 +76,6 @@ class APIController extends Controller
         $user->role = 1;
         $user->save();
 
-        /*
-        if ($this->loginAfterSignUp) {
-        return $this->login($request);
-        }
-        */
-
         return response()->json([
             'success' => true,
             'data' => $user,
