@@ -17,7 +17,7 @@ return $request->user();
 });
  */
 
-Route::group(['middleware' => 'cors'], function () {
+//Route::group(['middleware' => 'cors'], function () {
     
     Route::post('login', 'APIController@login');
     Route::post('register', 'APIController@register');
@@ -39,7 +39,7 @@ Route::group(['middleware' => 'cors'], function () {
         Route::delete('users/{id}', 'api\usuariosController@destroy')->name('delUser');
     });
 
-});
+//});
 
 
 
