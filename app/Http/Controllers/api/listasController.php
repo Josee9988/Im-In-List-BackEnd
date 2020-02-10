@@ -7,21 +7,8 @@ use App\Listas;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-class listasController extends Controller
+class listasController extends protectedUserController
 {
-
-    /**
-     * @var
-     */
-    protected $user;
-
-    /**
-     * ListasController constructor.
-     */
-    public function __construct()
-    {
-        $this->user = JWTAuth::parseToken()->authenticate();
-    }
 
     /**
      * Display a listing of the resource.
@@ -35,17 +22,13 @@ class listasController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *  - Si la id de la lista la ha creado un usuario difente no se mostrara
      */
     public function show($id)
     {
         $lista = Listas::find($id);
 
-        // - En caso de id erronea
-        if (!$id || !$lista) {
+        if (!$id || !$lista || !$this->user->listas()->find($id)) {
             return response()->json([
                 'message' => 'Error lista con el ' . $id . ' no se ha encontrado',
             ], 400);
