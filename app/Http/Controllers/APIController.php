@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use JWTAuth;
+use App\Http\Requests\RegistrationFormRequest;
 use App\User;
 use Illuminate\Http\Request;
+use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
-use App\Http\Requests\RegistrationFormRequest;
 
 class APIController extends Controller
 {
@@ -23,6 +23,11 @@ class APIController extends Controller
     {
         $input = $request->only('email', 'password');
         $token = null;
+
+        /*       $input = $request->only('email', 'password');
+        $token = null;
+        $inputs = Request::json()->all();
+        $user = $inputs['email'];*/
 
         if (!$token = JWTAuth::attempt($input)) {
             return response()->json([
@@ -45,7 +50,7 @@ class APIController extends Controller
     public function logout(Request $request)
     {
         $this->validate($request, [
-            'token' => 'required'
+            'token' => 'required',
         ]);
 
         try {
@@ -53,12 +58,12 @@ class APIController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'User logged out successfully'
+                'message' => 'User logged out successfully',
             ]);
         } catch (JWTException $exception) {
             return response()->json([
                 'success' => false,
-                'message' => 'Sorry, the user cannot be logged out'
+                'message' => 'Sorry, the user cannot be logged out',
             ], 500);
         }
     }
@@ -76,12 +81,12 @@ class APIController extends Controller
         $user->save();
         /*
         if ($this->loginAfterSignUp) {
-            return $this->login($request);
+        return $this->login($request);
         }
-        */
+         */
         return response()->json([
-            'success'   =>  true,
-            'data'      =>  $user
+            'success' => true,
+            'data' => $user,
         ], 200);
     }
 }
