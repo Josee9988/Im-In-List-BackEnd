@@ -58,9 +58,7 @@ class usuariosController extends Controller
         $usuario->name = $request->name;
         $usuario->email = $request->email;
         $usuario->password = Hash::make($request->password);
-        $usuario->role = $request->role;
-        $usuario->listasCreadas = $request->listasCreadas;
-        $usuario->listasParticipantes = $request->listasParticipantes;
+        $usuario->role = 1;
         
         $token = JWTAuth::fromUser($usuario);
 
