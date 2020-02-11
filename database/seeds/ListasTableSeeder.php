@@ -30,5 +30,14 @@ class ListasTableSeeder extends Seeder
             'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
             'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
+
+        DB::table('listas')->insert([
+            'user_id' => 3,
+            'titulo' => 'Lista Registrado',
+            'descripcion'=> 'La lista de Registradp',
+            'passwordLista' => Hash::make('1234'),
+            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+        ]);
     }
 }
