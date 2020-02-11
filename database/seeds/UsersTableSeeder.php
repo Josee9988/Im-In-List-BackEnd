@@ -63,8 +63,8 @@ class UsersTableSeeder extends Seeder
         ]);
 
         DB::table('users')->insert([
-            'name' => 'registrado3',
-            'email' => 'registrado3@gmail.com',
+            'name' => 'registrado4',
+            'email' => 'registrado4@gmail.com',
             'password' => Hash::make('1234'),
             'role' => 1,
             'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
