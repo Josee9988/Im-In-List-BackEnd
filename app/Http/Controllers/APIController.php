@@ -71,6 +71,23 @@ class APIController extends Controller
         }
     }
 
+    public function refreshToken()
+    {
+        $token = JWTAuth::getToken();
+
+        try {
+            $token = JWTAuth::refresh($token);
+            return response()->json([
+                'token' => $token,
+            ], 200);
+            
+        } catch (TokenExpiredException $e) {
+            return response()->json([
+                'message' => 'Vuelve al login',
+            ], 422);
+        }
+    }
+
     public function getAuthenticatedUser()
     {
         try {
