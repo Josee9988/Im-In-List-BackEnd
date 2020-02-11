@@ -36,15 +36,6 @@ class UsersTableSeeder extends Seeder
         ]);
 
         DB::table('users')->insert([
-            'name' => 'registrado2',
-            'email' => 'registrado2@gmail.com',
-            'password' => Hash::make('1234'),
-            'role' => 1,
-            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
-            'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
-        ]);
-
-        DB::table('users')->insert([
             'name' => 'registrado',
             'email' => 'registrado@gmail.com',
             'password' => Hash::make('1234'),
@@ -54,8 +45,62 @@ class UsersTableSeeder extends Seeder
         ]);
 
         DB::table('users')->insert([
+            'name' => 'registrado2',
+            'email' => 'registrado2@gmail.com',
+            'password' => Hash::make('1234'),
+            'role' => 1,
+            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+        ]);
+
+        DB::table('users')->insert([
+            'name' => 'registrado3',
+            'email' => 'registrado3@gmail.com',
+            'password' => Hash::make('1234'),
+            'role' => 1,
+            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+        ]);
+
+        DB::table('users')->insert([
+            'name' => 'registrado3',
+            'email' => 'registrado3@gmail.com',
+            'password' => Hash::make('1234'),
+            'role' => 1,
+            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+        ]);
+
+        DB::table('users')->insert([
+            'name' => 'premium',
+            'email' => 'premium@gmail.com',
+            'password' => Hash::make('1234'),
+            'role' => 2,
+            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+        ]);
+
+        DB::table('users')->insert([
             'name' => 'premium2',
             'email' => 'premium2@gmail.com',
+            'password' => Hash::make('1234'),
+            'role' => 2,
+            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+        ]);
+
+        DB::table('users')->insert([
+            'name' => 'premium3',
+            'email' => 'premium3@gmail.com',
+            'password' => Hash::make('1234'),
+            'role' => 2,
+            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+        ]);
+
+        DB::table('users')->insert([
+            'name' => 'premium4',
+            'email' => 'premium4@gmail.com',
             'password' => Hash::make('1234'),
             'role' => 2,
             'created_at' => \Carbon\Carbon::now()->toDateTimeString(),

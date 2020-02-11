@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 
-class usuariosController extends Controller
+class usuariosController extends protectedUserController
 {
 
     /**
@@ -59,8 +59,8 @@ class usuariosController extends Controller
         $usuario->email = $request->email;
         $usuario->password = Hash::make($request->password);
         $usuario->role = 1;
-        $usuario->name = $request->name;
-        $usuario->email = $request->email;
+        $usuario->listasCreadas = $request->listasCreadas;
+        $usuario->listasParticipantes = $request->listasParticipantes;
         
         $token = JWTAuth::fromUser($usuario);
 
