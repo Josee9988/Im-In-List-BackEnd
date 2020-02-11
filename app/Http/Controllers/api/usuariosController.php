@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers\api;
 
-use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-
+/**
+ *  - Extiende de controlador padre
+ */
 class usuariosController extends protectedUserController
 {
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     *  - GETUSERS
+     * - Devuelve los usuarios -> admin
      */
-    public function index()
+    public function getUsers()
     {
 
         $users = User::all();
@@ -25,12 +25,10 @@ class usuariosController extends protectedUserController
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *  - INFOUSER
+     * - Informacion de un usuario
      */
-    public function show($id)
+    public function infoUser($id)
     {
 
         $usuario = User::find($id);
@@ -47,12 +45,10 @@ class usuariosController extends protectedUserController
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     *  - ADDUSER
+     * - Agrega un usuario ->user
      */
-    public function store(Request $request)
+    public function addUser(Request $request)
     {
         $usuario = new User();
         $usuario->name = $request->name;
@@ -61,7 +57,7 @@ class usuariosController extends protectedUserController
         $usuario->role = 1;
         $usuario->listasCreadas = $request->listasCreadas;
         $usuario->listasParticipantes = $request->listasParticipantes;
-        
+
         $token = JWTAuth::fromUser($usuario);
 
         if ($usuario->save()) {
@@ -75,17 +71,14 @@ class usuariosController extends protectedUserController
                 'message' => 'Error el usuariono se ha creado',
             ], 500);
         }
-        
+
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *  - EDITUSER
+     * - Edita una lista por id -> user
      */
-    public function update($id, Request $request)
+    public function editUser($id, Request $request)
     {
         $usuario = User::find($id);
 
@@ -111,12 +104,10 @@ class usuariosController extends protectedUserController
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *  - DELUSER
+     * - Elimina un usuario
      */
-    public function destroy($id)
+    public function delUser($id)
     {
         $usuario = $this->show($id);
 

@@ -7,9 +7,7 @@ use Illuminate\Support\Facades\Hash;
 class ListasTableSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
-     *
-     * @return void
+     *  - Inserta los datos en la tabla
      */
     public function run()
     {
@@ -22,7 +20,7 @@ class ListasTableSeeder extends Seeder
             'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
             'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
-
+        
         DB::table('listas')->insert([
             'user_id' => 2,
             'titulo' => 'Lista Jose',

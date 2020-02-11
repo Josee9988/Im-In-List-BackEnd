@@ -2,46 +2,40 @@
 
 namespace App;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
+/**
+ *  - Implementado del metodo de autenticacion JWT
+ */
 class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
     /**
-     * The attributes that are mass assignable.
-     * 
-     * @var array
+     *  - Atributos
      */
     protected $fillable = [
-        'name', 'email', 'password','role', 'listasCreadas', 'listasParticipiantes'
+        'name', 'email', 'password', 'role', 'listasCreadas', 'listasParticipiantes',
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
+     *  - Atributos escondidos del array
      */
     protected $hidden = [
         'password', 'remember_token',
     ];
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
+     *  - Casteo nativo
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
 
     /**
-     * Get the identifier that will be stored in the subject claim of the JWT.
-     *
-     * @return mixed
+     *  - Coge el identificador que guardara el token del user
      */
     public function getJWTIdentifier()
     {
@@ -49,9 +43,7 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
-     * Return a key value array, containing any custom claims to be added to the JWT.
-     *
-     * @return array
+     *  - Devuelve la key deñ array, agegada de JWT
      */
     public function getJWTCustomClaims()
     {
@@ -59,7 +51,7 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     *  - Relacion con del user con la lista (user_id) creada
      */
     public function listas()
     {

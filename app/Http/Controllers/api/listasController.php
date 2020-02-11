@@ -2,35 +2,40 @@
 
 namespace App\Http\Controllers\api;
 
-use App\Http\Controllers\Controller;
 use App\Listas;
 use Illuminate\Http\Request;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
+/**
+ *  - Extiende de controlador padre 
+ */
 class listasController extends protectedUserController
 {
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     *  - GETLISTAS
+     * - Devuelve las listas que ha creado el usuario -> user
      */
-    public function index()
+    public function getLista()
     {
         $listas = $this->user->listas()->get()->toArray();
         return $listas;
     }
 
-    public function listasAdmin()
+    /**
+     *  - GETLISTASADMIN
+     * - Devuelve todas las listas ->Admin
+     */
+    public function getListasAdmin()
     {
         $listas = Listas::all()->toArray();
         return $listas;
     }
 
     /**
-     *  - Si la id de la lista la ha creado un usuario difente no se mostrara
+     *  - INFOLISTA
+     * - Informacion de una lista si la ha creado el usuario -> user
      */
-    public function show($id)
+    public function infoLista($id)
     {
         $lista = Listas::find($id);
 
@@ -44,12 +49,10 @@ class listasController extends protectedUserController
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     *  - ADDLISTA
+     * - Agrega una lista ->user 
      */
-    public function store(Request $request)
+    public function addLista(Request $request)
     {
         $lista = new Listas();
         $lista->titulo = $request->titulo;
@@ -70,17 +73,12 @@ class listasController extends protectedUserController
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *  - EDITLISTA
+     * - Edita una lista por id -> user
      */
-    public function update($id, Request $request)
+    public function editLista($id, Request $request)
     {
-
         $lista = $this->user->listas()->find($id);
-
         // - En caso de id erronea
         if (!$id || !$lista) {
             return response()->json([
@@ -89,7 +87,6 @@ class listasController extends protectedUserController
         }
 
         $updated = $lista->fill($request->all())->save();
-
         if ($updated) {
             return response()->json([
                 'message' => 'Lista modificada correctamente',
@@ -103,15 +100,12 @@ class listasController extends protectedUserController
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *  - DElLIST
+     * - Elimina una lista por el id si la tiene el user -> user
      */
-    public function destroy($id)
+    public function delList($id)
     {
         $lista = $this->user->listas()->find($id);
-
         // - En caso de id erronea
         if (!$lista || !$id) {
             return response()->json([
