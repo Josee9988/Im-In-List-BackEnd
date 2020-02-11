@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\RegistrationFormRequest;
 use App\User;
 use Illuminate\Http\Request;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 class APIController extends Controller
 {
@@ -31,7 +32,6 @@ class APIController extends Controller
 
     }
 
-
     public function login(Request $request)
     {
         $input = $request->only('email', 'password');
@@ -50,21 +50,20 @@ class APIController extends Controller
         ]);
     }
 
-    
     public function logout(Request $request)
     {
         $this->validate($request, [
             'token' => 'required',
         ]);
 
-        try {
-            JWTAuth::invalidate($request->token);
-
+        if (JWTAuth::invalidate($request->token)) {
             return response()->json([
                 'success' => true,
                 'message' => 'User logged out successfully',
             ]);
-        } catch (JWTException $exception) {
+            $request->token->delete();
+        } else {
+
             return response()->json([
                 'success' => false,
                 'message' => 'Sorry, the user cannot be logged out',
@@ -72,6 +71,29 @@ class APIController extends Controller
         }
     }
 
+    public function getAuthenticatedUser()
+    {
+        try {
 
+            if (!$user = JWTAuth::parseToken()->authenticate()) {
+                return response()->json(['user_not_found'], 404);
+            }
+
+        } catch (TokenExpiredException $e) {
+
+            return response()->json(['token_expired']);
+
+        } catch (TokenInvalidException $e) {
+
+            return response()->json(['token_invalid']);
+
+        } catch (JWTException $e) {
+
+            return response()->json(['token_absent']);
+
+        }
+
+        return response()->json(compact('user'));
+    }
 
 }

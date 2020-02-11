@@ -7,6 +7,8 @@ Route::group(['middleware' => 'auth.jwt'], function () {
 
     Route::get('logout', 'APIController@logout');
 
+    Route::get('user', 'APIController@getAuthenticatedUser');
+
     Route::get('listas', 'api\listasController@index')->name('getListas');
     Route::get('listas/{id}', 'api\listasController@show')->name('getLista');
     Route::post('listas', 'api\listasController@store')->name('addLista');
