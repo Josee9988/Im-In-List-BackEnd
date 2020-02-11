@@ -17,7 +17,7 @@ class listasController extends protectedUserController
      */
     public function index()
     {
-        $listas = $this->user->listas()->get(['titulo', 'descripcion', 'passwordLista', 'elementos'])->toArray();
+        $listas = $this->user->listas()->get()->toArray();
         return $listas;
     }
 
