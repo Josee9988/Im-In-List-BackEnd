@@ -7,9 +7,7 @@ use Illuminate\Support\Facades\Schema;
 class CreateListasTable extends Migration
 {
     /**
-     * Run the migrations.
-     *
-     * @return void
+     *  - Estructura de las tablas
      */
     public function up()
     {
@@ -27,9 +25,7 @@ class CreateListasTable extends Migration
     }
 
     /**
-     * Reverse the migrations.
-     *
-     * @return void
+     * - Elimina tabla
      */
     public function down()
     {

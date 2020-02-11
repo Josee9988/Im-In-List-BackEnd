@@ -7,9 +7,7 @@ use Illuminate\Support\Facades\Hash;
 class UsersTableSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
-     *
-     * @return void
+     *  - Inserta los datos en la tabla
      */
     public function run()
     {

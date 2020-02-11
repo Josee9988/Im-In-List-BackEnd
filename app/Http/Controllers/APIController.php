@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
-use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class APIController extends Controller
 {
@@ -16,6 +16,10 @@ class APIController extends Controller
      */
     //public $loginAfterSignUp = true;
 
+    /**
+     *  - R E G I S T E R
+     * - Crea un usuario y le crea un token
+     */
     public function register(Request $request)
     {
 
@@ -32,6 +36,10 @@ class APIController extends Controller
 
     }
 
+    /**
+     *  - L O G I N
+     * - Si email y password son correctos se genera el token
+     */
     public function login(Request $request)
     {
         $input = $request->only('email', 'password');
@@ -39,38 +47,18 @@ class APIController extends Controller
 
         if (!$token = JWTAuth::attempt($input)) {
             return response()->json([
-                'success' => false,
-                'message' => '- Error, password o email',
+                'message' => '- Error de login, password o email incorrectos',
             ], 401);
         }
 
         return response()->json([
-            'success' => true,
             'token' => $token,
         ]);
     }
 
-    public function logout(Request $request)
-    {
-        $this->validate($request, [
-            'token' => 'required',
-        ]);
-
-        if (JWTAuth::invalidate($request->token)) {
-            return response()->json([
-                'success' => true,
-                'message' => 'User logged out successfully',
-            ]);
-            $request->token->delete();
-        } else {
-
-            return response()->json([
-                'success' => false,
-                'message' => 'Sorry, the user cannot be logged out',
-            ], 500);
-        }
-    }
-
+    /**
+     *  - R E F R E S H
+     */
     public function refreshToken()
     {
         $token = JWTAuth::getToken();
@@ -88,6 +76,9 @@ class APIController extends Controller
         }
     }
 
+    /**
+     *  - AUTHENTICATE
+     */
     public function getAuthenticatedUser()
     {
         try {
@@ -111,6 +102,28 @@ class APIController extends Controller
         }
 
         return response()->json(compact('user'));
+    }
+
+    /**
+     *  - L O G O U T (FRONT)
+     */
+    public function logout(Request $request)
+    {
+        $this->validate($request, [
+            'token' => 'required',
+        ]);
+
+        if (JWTAuth::invalidate($request->token)) {
+            return response()->json([
+                'message' => 'User logged out successfully',
+            ]);
+            $request->token->delete();
+        } else {
+
+            return response()->json([
+                'message' => 'Sorry, the user cannot be logged out',
+            ], 500);
+        }
     }
 
 }

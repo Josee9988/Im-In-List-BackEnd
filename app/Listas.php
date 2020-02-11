@@ -10,6 +10,7 @@ class Listas extends Model
      * @var string
      */
     protected $table = 'listas';
-    // - Ahorras codigo == al fillable
+
+    // = Fillable, Atributos
     protected $guarded = [];
 }
