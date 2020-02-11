@@ -14,7 +14,7 @@ class APIController extends Controller
     /**
      * @var bool
      */
-    public $loginAfterSignUp = true;
+    //public $loginAfterSignUp = true;
 
     public function register(Request $request)
     {
