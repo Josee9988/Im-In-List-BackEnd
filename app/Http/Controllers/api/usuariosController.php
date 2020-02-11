@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 
-class usuariosController extends protectedUserController
+class usuariosController extends Controller
 {
 
     /**

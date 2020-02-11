@@ -15,10 +15,23 @@ class APIController extends Controller
      */
     public $loginAfterSignUp = true;
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+    public function register(Request $request)
+    {
+
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+        $user->role = 1;
+        $user->save();
+
+        $token = JWTAuth::fromUser($user);
+
+        return response()->json(compact('user', 'token'), 201);
+
+    }
+
+
     public function login(Request $request)
     {
         $input = $request->only('email', 'password');
@@ -37,11 +50,7 @@ class APIController extends Controller
         ]);
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
-     */
+    
     public function logout(Request $request)
     {
         $this->validate($request, [
@@ -63,22 +72,6 @@ class APIController extends Controller
         }
     }
 
-    /**
-     * @param RegistrationFormRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function register(Request $request)
-    {
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
-        $user->role = 1;
-        $user->save();
 
-        return response()->json([
-            'success' => true,
-            'data' => $user,
-        ], 200);
-    }
+
 }
