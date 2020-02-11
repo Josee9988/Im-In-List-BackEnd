@@ -13,7 +13,7 @@ Route::group(['middleware' => 'auth.jwt'], function () {
 
     Route::get('user', 'APIController@getAuthenticatedUser');
 
-    Route::get('listasAdmin', 'api\listasController@listasAdmin');
+    Route::get('listasAdmin', 'api\listasController@getListasAdmin');
 
     Route::get('listas', 'api\listasController@getLista')->name('getListas');
     Route::get('listas/{id}', 'api\listasController@infoLista')->name('getLista');
