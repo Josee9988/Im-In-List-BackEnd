@@ -21,6 +21,12 @@ class listasController extends protectedUserController
         return $listas;
     }
 
+    public function listasAdmin()
+    {
+        $listas = Listas::all()->toArray();
+        return $listas;
+    }
+
     /**
      *  - Si la id de la lista la ha creado un usuario difente no se mostrara
      */

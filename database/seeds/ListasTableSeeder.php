@@ -19,6 +19,8 @@ class ListasTableSeeder extends Seeder
             'descripcion'=> 'La lista de Borja',
             'passwordLista' => Hash::make('1234'),
             'elementos'=>str_replace("'", "\'", json_encode(['Comprar platanos','Comprar Melocotones'])),
+            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
 
         DB::table('listas')->insert([
@@ -27,6 +29,8 @@ class ListasTableSeeder extends Seeder
             'descripcion'=> 'La lista de Jose',
             'passwordLista' => Hash::make('1234'),
             'elementos'=>str_replace("'", "\'", json_encode(['Comprar agua','Comprar lapices'])),
+            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
     }
 }
