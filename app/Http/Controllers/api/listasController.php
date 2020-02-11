@@ -106,7 +106,7 @@ class listasController extends protectedUserController
     public function delList($id)
     {
         $lista = $this->user->listas()->find($id);
-        // - En caso de id erronea
+        
         if (!$lista || !$id) {
             return response()->json([
                 'message' => 'Error la lista no se ha encontrado',

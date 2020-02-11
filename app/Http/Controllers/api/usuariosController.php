@@ -109,7 +109,7 @@ class usuariosController extends protectedUserController
      */
     public function delUser($id)
     {
-        $usuario = $this->show($id);
+        $usuario = $this->infoUser($id);
 
         // - En caso de id erronea
         if (!$usuario || !$id) {
