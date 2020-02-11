@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::post('login', 'APIController@login');
-Route::post('register', 'APIController@register');
+Route::post('register', 'api\usuariosController@store');
 
 Route::group(['middleware' => 'auth.jwt'], function () {
 

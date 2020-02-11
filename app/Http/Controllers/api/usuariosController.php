@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 
 class usuariosController extends Controller
@@ -60,10 +61,13 @@ class usuariosController extends Controller
         $usuario->role = $request->role;
         $usuario->listasCreadas = $request->listasCreadas;
         $usuario->listasParticipantes = $request->listasParticipantes;
+        
+        $token = JWTAuth::fromUser($usuario);
 
         if ($usuario->save()) {
             return response()->json([
                 'message' => 'Usuario creado correctamente',
+                'token' => $token,
                 'user' => $usuario,
             ]);
         } else {
@@ -71,7 +75,7 @@ class usuariosController extends Controller
                 'message' => 'Error el usuariono se ha creado',
             ], 500);
         }
-
+        
     }
 
     /**
