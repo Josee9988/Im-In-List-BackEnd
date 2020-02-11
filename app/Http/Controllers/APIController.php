@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
-use JWTAuth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
@@ -80,7 +80,7 @@ class APIController extends Controller
             return response()->json([
                 'token' => $token,
             ], 200);
-            
+
         } catch (TokenExpiredException $e) {
             return response()->json([
                 'message' => 'Vuelve al login',
