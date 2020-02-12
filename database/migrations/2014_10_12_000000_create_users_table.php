@@ -19,8 +19,6 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->tinyInteger('role')->default(1);
-            $table->json('listasCreadas')->nullable();
-            $table->json('listasParticipantes')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
