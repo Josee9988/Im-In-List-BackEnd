@@ -4,10 +4,10 @@ namespace App\Http\Controllers\api;
 
 use App\Listas;
 use App\ParticipaUser;
-use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Http\Request;
 
-class participaUsuariosController extends protectedUserController
+class participaUsuariosController extends listasController
 {
 
     /**
@@ -35,26 +35,44 @@ class participaUsuariosController extends protectedUserController
      */
     public function addUserToList(Request $request)
     {
-        $listaParticipa = new ParticipaUser();
-        
+
         $user = User::where('email', $request->email)->select('id')->get()->toArray();
-        $lista = Listas::where('email', $request->email)->select('id')->get()->toArray();
+        $lista = Listas::where('url', $request->url)->select('id')->get();
+        $user_id = Listas::where('url', $request->url)->select('user_id')->get();
 
-        return $user;
+        // - Id de la lista para agregar participantes
+        $auxLista = json_decode($lista);
+        $idLista= $auxLista[0]->id;    
+        
+        // - Si el usuario es el creador de la lista podra agregar
+        $auxUser = json_decode($user_id);
+        $idUsuarioCreador = $auxUser[0]->user_id;
 
-        $listaParticipa->idUser = $request->user;
-        $listaParticipa->idLista= $request->descripcion;
-/*
-        if ($this->user->listas()->save($lista)) {
+
+        if ($this->user->id == $idUsuarioCreador) {
+
+            // Nuevo participante
+            $listaParticipa = new ParticipaUser();
+            $listaParticipa->idUser = $user;
+            $listaParticipa->idLista = $idLista;
+            $this->user->listas()->save($listaParticipa);
+            /**
+             * AQUI
+             */
+            $participantes = Listas::find($idLista);
+            $participantes->participantes += 1;
+            $participantes->save();
+
+            $listaFinal = Listas::where('id', $idLista)->get()->toArray();
             return response()->json([
-                'message' => 'Lista creada correctamente',
-                'lista' => $lista,
+                'message' => 'Usuario agregado',
+                'lista' => $listaFinal,
             ]);
-        } else {
-            return response()->json([
-                'message' => 'Error la lista no se ha creado',
-            ], 500);
         }
-        */
+
+        return response()->json([
+            'message' => 'Error usuario no agregado, ¿ Eres el creador de la lista ?',
+        ]);
+
     }
 }

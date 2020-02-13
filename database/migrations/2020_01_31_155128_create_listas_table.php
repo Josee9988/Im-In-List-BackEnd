@@ -14,13 +14,15 @@ class CreateListasTable extends Migration
         Schema::create('listas', function (Blueprint $table) {
             $table->bigIncrements('id');
             
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
 
-            $table->string('titulo');
+            $table->string('URL')->nullable();
+            $table->string('titulo')->nullable();
             $table->string('descripcion')->nullable();
             $table->string('passwordLista')->nullable();
             $table->json('elementos')->nullable();
+            $table->Integer('participantes')->default(0);
             $table->timestamps();
         });
 

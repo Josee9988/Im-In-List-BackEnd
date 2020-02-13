@@ -59,6 +59,7 @@ class listasController extends protectedUserController
     public function addLista(Request $request)
     {
         $lista = new Listas();
+        $lista->url = $this->random().'/'.$request->url;
         $lista->titulo = $request->titulo;
         $lista->descripcion = $request->descripcion;
         $lista->passwordLista = $request->passwordLista;
@@ -74,7 +75,19 @@ class listasController extends protectedUserController
                 'message' => 'Error la lista no se ha creado',
             ], 500);
         }
+
+        function random(){
+
+            $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $charactersLength = strlen($characters);
+            $randomString = '';
+            for ($i = 0; $i < 5; $i++) {
+                $randomString .= $characters[rand(0, $charactersLength - 1)];
+            }
+            return $randomString;
+        }
     }
+
 
     /**
      *  - EDITLISTA
@@ -83,6 +96,7 @@ class listasController extends protectedUserController
     public function editLista($id, Request $request)
     {
         $lista = $this->user->listas()->find($id);
+        
         // - En caso de id erronea
         if (!$id || !$lista) {
             return response()->json([
