@@ -65,7 +65,7 @@ class listasController extends protectedUserController
         $lista->titulo = $request->titulo;
         $lista->descripcion = $request->descripcion;
         $lista->passwordLista = $request->passwordLista;
-        $lista->elementos = $request->elementos;
+        $lista->elementos = json_encode($request->elementos);
 
         if ($this->user->listas()->save($lista)) {
             return response()->json([
