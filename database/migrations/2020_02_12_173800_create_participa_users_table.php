@@ -21,6 +21,8 @@ class CreateParticipaUsersTable extends Migration
 
             $table->unsignedBigInteger('idLista');
             $table->foreign('idLista')->references('id')->on('listas')->onUpdate('CASCADE')->onDelete('CASCADE');
+            
+            $table->timestamps();
         });
     }
 

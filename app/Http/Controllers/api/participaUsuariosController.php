@@ -36,29 +36,35 @@ class participaUsuariosController extends listasController
     public function addUserToList(Request $request)
     {
 
-        $user = User::where('email', $request->email)->select('id')->get()->toArray();
+        $user = User::where('email', $request->email)->select('id')->get();
         $lista = Listas::where('url', $request->url)->select('id')->get();
         $user_id = Listas::where('url', $request->url)->select('user_id')->get();
 
         // - Id de la lista para agregar participantes
+        $auxUserParticipar = json_decode($user);
+        $idUserParticipar = $auxUserParticipar[0]->id;
+
+        // - Id de la lista para agregar participantes
         $auxLista = json_decode($lista);
-        $idLista= $auxLista[0]->id;    
-        
+        if (empty($auxLista[0]->id)) {
+            return response()->json([
+                'message' => 'Error ¿existe la lista?',
+            ]);
+        }
+        $idLista = $auxLista[0]->id;
+
         // - Si el usuario es el creador de la lista podra agregar
         $auxUser = json_decode($user_id);
         $idUsuarioCreador = $auxUser[0]->user_id;
-
 
         if ($this->user->id == $idUsuarioCreador) {
 
             // Nuevo participante
             $listaParticipa = new ParticipaUser();
-            $listaParticipa->idUser = $user;
+            $listaParticipa->idUser = $idUserParticipar;
             $listaParticipa->idLista = $idLista;
-            $this->user->listas()->save($listaParticipa);
-            /**
-             * AQUI
-             */
+            $listaParticipa->save();
+
             $participantes = Listas::find($idLista);
             $participantes->participantes += 1;
             $participantes->save();
@@ -69,10 +75,8 @@ class participaUsuariosController extends listasController
                 'lista' => $listaFinal,
             ]);
         }
-
         return response()->json([
             'message' => 'Error usuario no agregado, ¿ Eres el creador de la lista ?',
         ]);
-
     }
 }

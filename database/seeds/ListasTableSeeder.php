@@ -13,23 +13,23 @@ class ListasTableSeeder extends Seeder
     {
         DB::table('listas')->insert([
             'user_id' => 1,
-            'URL' => $this->random().'/Borja_List',
+            'URL' => 'Borja_List/' . $this->random(),
             'titulo' => 'Lista Borja',
-            'descripcion'=> 'La lista de Borja',
+            'descripcion' => 'La lista de Borja',
             'passwordLista' => Hash::make('1234'),
-            'elementos'=>str_replace("'", "\'", json_encode(['Comprar platanos','Comprar Melocotones'])),
+            'elementos' => str_replace("'", "\'", json_encode(['Comprar platanos', 'Comprar Melocotones'])),
             'participantes' => 0,
             'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
             'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
-        
+
         DB::table('listas')->insert([
             'user_id' => 2,
-            'URL' => $this->random().'/Jose_List',
+            'URL' => 'Jose_List/' . $this->random(),
             'titulo' => 'Lista Jose',
-            'descripcion'=> 'La lista de Jose',
+            'descripcion' => 'La lista de Jose',
             'passwordLista' => Hash::make('1234'),
-            'elementos'=>str_replace("'", "\'", json_encode(['Comprar agua','Comprar lapices'])),
+            'elementos' => str_replace("'", "\'", json_encode(['Comprar agua', 'Comprar lapices'])),
             'participantes' => 1,
             'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
             'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
@@ -37,9 +37,9 @@ class ListasTableSeeder extends Seeder
 
         DB::table('listas')->insert([
             'user_id' => 3,
-            'URL' => $this->random().'/Registrado_List',
+            'URL' => 'Registrado_lista/' . $this->random(),
             'titulo' => 'Lista Registrado',
-            'descripcion'=> 'La lista de Registradp',
+            'descripcion' => 'La lista de Registradp',
             'passwordLista' => Hash::make('1234'),
             'participantes' => 1,
             'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
@@ -48,9 +48,9 @@ class ListasTableSeeder extends Seeder
 
         DB::table('listas')->insert([
             'user_id' => 2,
-            'URL' => $this->random().'/Jose_List2',
+            'URL' => 'Jose_list:two/' . $this->random(),
             'titulo' => 'Lista JOSE 2',
-            'descripcion'=> 'La lista de OJSE',
+            'descripcion' => 'La lista de OJSE',
             'passwordLista' => Hash::make('1234'),
             'participantes' => 1,
             'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
@@ -58,7 +58,8 @@ class ListasTableSeeder extends Seeder
         ]);
     }
 
-    public function random(){
+    public function random()
+    {
 
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
