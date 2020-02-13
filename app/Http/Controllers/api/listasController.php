@@ -6,7 +6,7 @@ use App\Listas;
 use Illuminate\Http\Request;
 
 /**
- *  - Extiende de controlador padre 
+ *  - Extiende de controlador padre
  */
 class listasController extends protectedUserController
 {
@@ -17,8 +17,12 @@ class listasController extends protectedUserController
      */
     public function getLista()
     {
+
+        //array_push($listas, $this->user->listas()->get());
         $listas = $this->user->listas()->get()->toArray();
+
         return $listas;
+
     }
 
     /**
@@ -50,11 +54,14 @@ class listasController extends protectedUserController
 
     /**
      *  - ADDLISTA
-     * - Agrega una lista ->user 
+     * - Agrega una lista ->user
      */
     public function addLista(Request $request)
     {
         $lista = new Listas();
+        $lista->url = $request->url.'/'.$this->random();
+        //$lista->url = $this->random();
+        
         $lista->titulo = $request->titulo;
         $lista->descripcion = $request->descripcion;
         $lista->passwordLista = $request->passwordLista;
@@ -70,7 +77,20 @@ class listasController extends protectedUserController
                 'message' => 'Error la lista no se ha creado',
             ], 500);
         }
+
     }
+
+    public function random(){
+
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < 5; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
+
 
     /**
      *  - EDITLISTA
@@ -79,6 +99,7 @@ class listasController extends protectedUserController
     public function editLista($id, Request $request)
     {
         $lista = $this->user->listas()->find($id);
+        
         // - En caso de id erronea
         if (!$id || !$lista) {
             return response()->json([
@@ -106,7 +127,7 @@ class listasController extends protectedUserController
     public function delList($id)
     {
         $lista = $this->user->listas()->find($id);
-        
+
         if (!$lista || !$id) {
             return response()->json([
                 'message' => 'Error la lista no se ha encontrado',
