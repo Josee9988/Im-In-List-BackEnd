@@ -59,8 +59,9 @@ class listasController extends protectedUserController
     public function addLista(Request $request)
     {
         $lista = new Listas();
-        //$lista->url = $request->url.'/'.$this->random();
-        $lista->url = $this->random();
+        $lista->url = $request->url.'/'.$this->random();
+        //$lista->url = $this->random();
+        
         $lista->titulo = $request->titulo;
         $lista->descripcion = $request->descripcion;
         $lista->passwordLista = $request->passwordLista;
@@ -77,16 +78,17 @@ class listasController extends protectedUserController
             ], 500);
         }
 
-        function random(){
+    }
 
-            $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            $charactersLength = strlen($characters);
-            $randomString = '';
-            for ($i = 0; $i < 5; $i++) {
-                $randomString .= $characters[rand(0, $charactersLength - 1)];
-            }
-            return $randomString;
+    public function random(){
+
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < 5; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
+        return $randomString;
     }
 
 
