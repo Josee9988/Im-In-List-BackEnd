@@ -13,6 +13,9 @@ Route::group(['middleware' => 'auth.jwt'], function () {
 
     Route::get('user', 'APIController@getAuthenticatedUser');
 
+    Route::get('participate', 'api\participaUsuariosController@getListasParticipa');
+    Route::post('participate', 'api\participaUsuariosController@addUserToList');
+
     Route::get('listas', 'api\listasController@getLista')->name('getListas');
     Route::get('listas/{id}', 'api\listasController@infoLista')->name('getLista');
     Route::post('listas', 'api\listasController@addLista')->name('addLista');

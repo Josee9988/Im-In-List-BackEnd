@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\api;
 
-use App\ParticipaUser;
 use App\Listas;
 use Illuminate\Http\Request;
 
 /**
- *  - Extiende de controlador padre 
+ *  - Extiende de controlador padre
  */
 class listasController extends protectedUserController
 {
@@ -19,24 +18,11 @@ class listasController extends protectedUserController
     public function getLista()
     {
 
-        $listaParticipantes = ParticipaUser::select('idLista')->get()->toArray();
+        //array_push($listas, $this->user->listas()->get());
+        $listas = $this->user->listas()->get()->toArray();
 
-        $listas = [];
-        foreach ($listaParticipantes as $lista => $id) {
+        return $listas;
 
-            
-            $aux = Listas::where('id', $id)->get();
-
-            array_push($listas, $aux);
-        } // LISTAS
-        
-        // USUARIOS
-        $userParticipantes = ParticipaUser::select('idUser')->get()->toArray();
-        
-        //$listas = $this->user->listas()->get()->toArray();
-        
-
-        
     }
 
     /**
@@ -68,7 +54,7 @@ class listasController extends protectedUserController
 
     /**
      *  - ADDLISTA
-     * - Agrega una lista ->user 
+     * - Agrega una lista ->user
      */
     public function addLista(Request $request)
     {
@@ -124,7 +110,7 @@ class listasController extends protectedUserController
     public function delList($id)
     {
         $lista = $this->user->listas()->find($id);
-        
+
         if (!$lista || !$id) {
             return response()->json([
                 'message' => 'Error la lista no se ha encontrado',

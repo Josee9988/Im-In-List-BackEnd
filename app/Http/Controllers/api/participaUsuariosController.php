@@ -2,84 +2,59 @@
 
 namespace App\Http\Controllers\api;
 
-use App\Http\Controllers\Controller;
+use App\Listas;
+use App\ParticipaUser;
 use Illuminate\Http\Request;
+use App\User;
 
-class participaUsuariosController extends Controller
+class participaUsuariosController extends protectedUserController
 {
+
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     *  - GETLISTASPARTICIPA
+     * - Devuelve las listas en que participa
      */
-    public function index()
+    public function getListasParticipa()
     {
+        $listaParticipantes = ParticipaUser::where('idUser', $this->user->id)->select('idLista')->get()->toArray();
+
+        $listas = [];
+        foreach ($listaParticipantes as $lista => $id) {
+
+            $aux = Listas::where('id', $id)->get();
+
+            array_push($listas, $aux);
+        }
+
+        return $listas;
+    }
+
+    /**
+     *  - ADDUSERTOLIST
+     * - Agrega un usuario a la lista
+     */
+    public function addUserToList(Request $request)
+    {
+        $listaParticipa = new ParticipaUser();
         
-    }
+        $user = User::where('email', $request->email)->select('id')->get()->toArray();
+        $lista = Listas::where('email', $request->email)->select('id')->get()->toArray();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+        return $user;
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $listaParticipa->idUser = $request->user;
+        $listaParticipa->idLista= $request->descripcion;
+/*
+        if ($this->user->listas()->save($lista)) {
+            return response()->json([
+                'message' => 'Lista creada correctamente',
+                'lista' => $lista,
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Error la lista no se ha creado',
+            ], 500);
+        }
+        */
     }
 }

@@ -12,14 +12,26 @@ class ParticipaUserTableSeeder extends Seeder
      */
     public function run()
     {
+        
         DB::table('participa_users')->insert([
             'idUser' => 1,
             'idLista' =>2,
         ]);
 
+        
         DB::table('participa_users')->insert([
             'idUser' => 2,
             'idLista' =>1,
+        ]);
+            
+        DB::table('participa_users')->insert([
+            'idUser' => 1,
+            'idLista' =>3,
+        ]);
+
+        DB::table('participa_users')->insert([
+            'idUser' => 1,
+            'idLista' =>4,
         ]);
     }
 }
