@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\api;
 
+use App\ParticipaUser;
 use App\Listas;
 use Illuminate\Http\Request;
 
@@ -17,8 +18,25 @@ class listasController extends protectedUserController
      */
     public function getLista()
     {
-        $listas = $this->user->listas()->get()->toArray();
-        return $listas;
+
+        $listaParticipantes = ParticipaUser::select('idLista')->get()->toArray();
+
+        $listas = [];
+        foreach ($listaParticipantes as $lista => $id) {
+
+            
+            $aux = Listas::where('id', $id)->get();
+
+            array_push($listas, $aux);
+        } // LISTAS
+        
+        // USUARIOS
+        $userParticipantes = ParticipaUser::select('idUser')->get()->toArray();
+        
+        //$listas = $this->user->listas()->get()->toArray();
+        
+
+        
     }
 
     /**
