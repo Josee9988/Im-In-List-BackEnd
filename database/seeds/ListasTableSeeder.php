@@ -37,7 +37,7 @@ class ListasTableSeeder extends Seeder
 
         DB::table('listas')->insert([
             'user_id' => 3,
-            'URL' => 'Registrado_lista/' . $this->random(),
+            'URL' => $this->random(),
             'titulo' => 'Lista Registrado',
             'descripcion' => 'La lista de Registradp',
             'passwordLista' => Hash::make('1234'),
