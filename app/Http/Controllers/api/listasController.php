@@ -26,20 +26,10 @@ class listasController extends protectedUserController
     }
 
     /**
-     *  - GETLISTASADMIN
-     * - Devuelve todas las listas ->Admin
-     */
-    public function getListasAdmin()
-    {
-        $listas = Listas::all()->toArray();
-        return $listas;
-    }
-
-    /**
      *  - INFOLISTA
      * - Informacion de una lista si la ha creado el usuario -> user
      */
-    public function infoLista($id)
+    public function infoListaAdmin($id)
     {
         $lista = Listas::find($id);
 

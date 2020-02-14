@@ -5,7 +5,6 @@ namespace App\Http\Controllers\api;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 /**
  *  - Extiende de controlador padre
@@ -55,15 +54,10 @@ class usuariosController extends protectedUserController
         $usuario->email = $request->email;
         $usuario->password = Hash::make($request->password);
         $usuario->role = 1;
-        $usuario->listasCreadas = $request->listasCreadas;
-        $usuario->listasParticipantes = $request->listasParticipantes;
-
-        $token = JWTAuth::fromUser($usuario);
 
         if ($usuario->save()) {
             return response()->json([
                 'message' => 'Usuario creado correctamente',
-                'token' => $token,
                 'user' => $usuario,
             ]);
         } else {
@@ -82,6 +76,11 @@ class usuariosController extends protectedUserController
     {
         $usuario = User::find($id);
 
+        $usuario->name = $request->name;
+        $usuario->email = $request->email;
+        $usuario->password = Hash::make($request->password);
+        $usuario->role = $request->role;
+
         // - En caso de id erronea
         if (!$id || !$usuario) {
             return response()->json([
@@ -89,7 +88,7 @@ class usuariosController extends protectedUserController
             ], 400);
         }
 
-        $updated = $usuario->fill($request->all())->save();
+        $updated = $usuario->save();
 
         if ($updated) {
             return response()->json([

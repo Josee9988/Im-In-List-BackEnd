@@ -38,12 +38,17 @@ Route::group(['middleware' => 'auth.jwt'], function () {
     // - Admin -> controlar
     Route::group(['middleware' => 'admin'], function () {
 
-        Route::get('listasAdmin', 'api\listasController@getListasAdmin');
-        Route::get('users', 'api\usuariosController@getUsers')->name('getUsers');
-        Route::get('users/{id}', 'api\usuariosController@infoUser')->name('getUser');
-        Route::post('users', 'api\usuariosController@addUser')->name('addUser');
-        Route::put('users/{id}', 'api\usuariosController@editUser')->name('editUser');
-        Route::delete('users/{id}', 'api\usuariosController@delUser')->name('delUser');
+        Route::get('listasAdmin', 'adminController@getListasAdmin');
+        //Route::post('listasAdmin', 'adminController@addLista');
+        Route::get('listasAdmin/{url}', 'adminController@infoListaAdmin');
+        Route::put('listasAdmin/{url}', 'adminController@editListaAdmin');
+        Route::delete('listasAdmin/{url}', 'adminController@delListAdmin');
+        
+        Route::get('users', 'api\usuariosController@getUsers');
+        Route::get('users/{id}', 'api\usuariosController@infoUser');
+        Route::post('users', 'api\usuariosController@addUser');
+        Route::put('users/{id}', 'api\usuariosController@editUser');
+        Route::delete('users/{id}', 'api\usuariosController@delUser');
 
     });
 });
