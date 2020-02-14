@@ -62,13 +62,28 @@ class listasController extends protectedUserController
         // - usuario/personalida /P
         // - usuario/aleatorio   /R
         // - /aleatorio         /0
+
         $lista = new Listas();
-        $lista->url = $request->url.'/'.$this->random();
-        //$lista->url = $this->random();
-        
+
+        if ($this->user->role == 0 || $this->user->role == 3) {
+            $lista->url = $this->user->name . '_' . $request->url;
+
+        } else if ($this->user->role == 1) {
+            $lista->url = $this->user->name . '_' . $this->random();
+
+        } else {
+            $lista->url = '_' . $this->random();
+        }
+
         $lista->titulo = $request->titulo;
         $lista->descripcion = $request->descripcion;
-        $lista->passwordLista = $request->passwordLista;
+
+        if ($this->user->role == 0 || $this->user->role == 3) {
+            $lista->passwordLista = $request->passwordLista;
+        } else {
+            $lista->passwordLista = null;
+        }
+
         $lista->elementos = json_encode($request->elementos);
 
         if ($this->user->listas()->save($lista)) {
@@ -84,17 +99,17 @@ class listasController extends protectedUserController
 
     }
 
-    public function random(){
+    public function random()
+    {
 
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
         return $randomString;
     }
-
 
     /**
      *  - EDITLISTA
@@ -103,7 +118,7 @@ class listasController extends protectedUserController
     public function editLista($id, Request $request)
     {
         $lista = $this->user->listas()->find($id);
-        
+
         // - En caso de id erronea
         if (!$id || !$lista) {
             return response()->json([

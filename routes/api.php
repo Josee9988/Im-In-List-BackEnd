@@ -9,6 +9,14 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', 'APIController@login');
 Route::post('register', 'APIController@register');
 
+/**
+ *  - No registrados
+ */
+Route::get('list/{url}', 'noRegistradosListsController@getListUrl');
+Route::post('list', 'noRegistradosListsController@addLista');
+Route::put('list/{url}', 'noRegistradosListsController@editLista');
+Route::delete('list/{url}', 'noRegistradosListsController@delList');
+
 Route::group(['middleware' => 'auth.jwt'], function () {
 
     // - Datos del usuario logeado
@@ -20,6 +28,7 @@ Route::group(['middleware' => 'auth.jwt'], function () {
     Route::delete('participate', 'api\participaUsuariosController@delParticipantes');
     Route::post('participateUsers', 'api\participaUsuariosController@getParticipantes'); // DIF
 
+    
     Route::get('listas', 'api\listasController@getLista');
     Route::get('listas/{id}', 'api\listasController@infoLista');
     Route::post('listas', 'api\listasController@addLista');
