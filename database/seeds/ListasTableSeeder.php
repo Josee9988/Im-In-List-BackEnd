@@ -13,7 +13,7 @@ class ListasTableSeeder extends Seeder
     {
         DB::table('listas')->insert([
             'user_id' => 1,
-            'URL' => 'Borja_List/' . $this->random(),
+            'URL' => 'Borja_List_' . $this->random(),
             'titulo' => 'Lista Borja',
             'descripcion' => 'La lista de Borja',
             'passwordLista' => Hash::make('1234'),
@@ -25,7 +25,7 @@ class ListasTableSeeder extends Seeder
 
         DB::table('listas')->insert([
             'user_id' => 2,
-            'URL' => 'Jose_List/' . $this->random(),
+            'URL' => 'Jose_List_' . $this->random(),
             'titulo' => 'Lista Jose',
             'descripcion' => 'La lista de Jose',
             'passwordLista' => Hash::make('1234'),
@@ -48,7 +48,7 @@ class ListasTableSeeder extends Seeder
 
         DB::table('listas')->insert([
             'user_id' => 2,
-            'URL' => 'Jose_list:two/' . $this->random(),
+            'URL' => 'Jose_list:two_' . $this->random(),
             'titulo' => 'Lista JOSE 2',
             'descripcion' => 'La lista de OJSE',
             'passwordLista' => Hash::make('1234'),
@@ -64,7 +64,7 @@ class ListasTableSeeder extends Seeder
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
         return $randomString;
