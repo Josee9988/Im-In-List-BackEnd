@@ -13,46 +13,77 @@ class ListasTableSeeder extends Seeder
     {
         DB::table('listas')->insert([
             'user_id' => 1,
-            'URL' => 'Borja_List_' . $this->random(),
+            'URL' => 'Borja_UrlBorjaList',
             'titulo' => 'Lista Borja',
             'descripcion' => 'La lista de Borja',
             'passwordLista' => Hash::make('1234'),
             'elementos' => str_replace("'", "\'", json_encode(['Comprar platanos', 'Comprar Melocotones'])),
-            'participantes' => 0,
+            /*'participantes' => 0,*/
             'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
             'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
 
         DB::table('listas')->insert([
             'user_id' => 2,
-            'URL' => 'Jose_List_' . $this->random(),
+            'URL' => 'Jose_UrlJoseList',
             'titulo' => 'Lista Jose',
             'descripcion' => 'La lista de Jose',
             'passwordLista' => Hash::make('1234'),
             'elementos' => str_replace("'", "\'", json_encode(['Comprar agua', 'Comprar lapices'])),
-            'participantes' => 1,
+            /*'participantes' => 1,*/
             'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
             'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
 
         DB::table('listas')->insert([
             'user_id' => 3,
-            'URL' => $this->random(),
+            'URL' => 'Registrado_' . $this->random(),
             'titulo' => 'Lista Registrado',
             'descripcion' => 'La lista de Registradp',
             'passwordLista' => Hash::make('1234'),
-            'participantes' => 1,
+            /*'participantes' => 1,*/
             'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
             'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
 
         DB::table('listas')->insert([
             'user_id' => 2,
-            'URL' => 'Jose_list:two_' . $this->random(),
+            'URL' => 'Jose_UrlJoseList2',
             'titulo' => 'Lista JOSE 2',
             'descripcion' => 'La lista de OJSE',
             'passwordLista' => Hash::make('1234'),
-            'participantes' => 1,
+            /*'participantes' => 1,*/
+            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+        ]);
+
+        DB::table('listas')->insert([
+            'user_id' => 2,
+            'URL' => 'Jose_UrlJoseList2',
+            'titulo' => 'Lista JOSE 2',
+            'descripcion' => 'La lista de OJSE',
+            'passwordLista' => Hash::make('1234'),
+            /*'participantes' => 1,*/
+            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+        ]);
+        DB::table('listas')->insert([
+            'user_id' => 2,
+            'URL' => 'Jose_UrlJoseList2',
+            'titulo' => 'Lista JOSE 2',
+            'descripcion' => 'La lista de OJSE',
+            'passwordLista' => Hash::make('1234'),
+            /*'participantes' => 1,*/
+            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+        ]);
+        DB::table('listas')->insert([
+            'user_id' => 2,
+            'URL' => 'Jose_UrlJoseList2',
+            'titulo' => 'Lista JOSE 2',
+            'descripcion' => 'La lista de OJSE',
+            'passwordLista' => Hash::make('1234'),
+            /*'participantes' => 1,*/
             'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
             'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
@@ -64,7 +95,7 @@ class ListasTableSeeder extends Seeder
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 8; $i++) {
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
         return $randomString;

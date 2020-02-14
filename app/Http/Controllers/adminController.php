@@ -26,7 +26,6 @@ class adminController extends Controller
     public function infoListaAdmin($url)
     {
         $urlRecibida = Listas::where('url', $url)->select('id')->get();
-        // - Id de la lista para agregar participantes
         $auxLista = json_decode($urlRecibida);
         if (empty($auxLista[0]->id)) {
             return response()->json([
@@ -47,7 +46,6 @@ class adminController extends Controller
     public function editListaAdmin($url, Request $request)
     {
         $urlRecibida = Listas::where('url', $url)->select('id')->get();
-        // - Id de la lista para agregar participantes
         $auxLista = json_decode($urlRecibida);
         if (empty($auxLista[0]->id)) {
             return response()->json([

@@ -28,12 +28,11 @@ Route::group(['middleware' => 'auth.jwt'], function () {
     Route::delete('participate', 'api\participaUsuariosController@delParticipantes');
     Route::post('participateUsers', 'api\participaUsuariosController@getParticipantes'); // DIF
 
-    
     Route::get('listas', 'api\listasController@getLista');
-    Route::get('listas/{id}', 'api\listasController@infoLista');
+    Route::get('listas/{url}', 'api\listasController@infoLista');
     Route::post('listas', 'api\listasController@addLista');
-    Route::put('listas/{id}', 'api\listasController@editLista');
-    Route::delete('listas/{id}', 'api\listasController@delList');
+    Route::put('listas/{url}', 'api\listasController@editLista');
+    Route::delete('listas/{url}', 'api\listasController@delList');
 
     // - Admin -> controlar
     Route::group(['middleware' => 'admin'], function () {

@@ -71,7 +71,7 @@ class noRegistradosListsController extends Controller
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
         return $randomString;
@@ -84,7 +84,6 @@ class noRegistradosListsController extends Controller
     public function editListaAdmin($url, Request $request)
     {
         $urlRecibida = Listas::where('url', $url)->select('id')->get();
-        // - Id de la lista para agregar participantes
         $auxLista = json_decode($urlRecibida);
         if (empty($auxLista[0]->id)) {
             return response()->json([

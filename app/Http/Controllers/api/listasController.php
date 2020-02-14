@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Listas;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 /**
  *  - Extiende de controlador padre
@@ -29,16 +30,18 @@ class listasController extends protectedUserController
      *  - INFOLISTA
      * - Informacion de una lista si la ha creado el usuario -> user
      */
-    public function infoListaAdmin($id)
+    public function infoLista($url)
     {
-        $lista = Listas::find($id);
-
-        if (!$id || !$lista || !$this->user->listas()->find($id)) {
+        $urlRecibida = Listas::where('url', $url)->select('id')->get();
+        $auxLista = json_decode($urlRecibida);
+        if (empty($auxLista[0]->id)) {
             return response()->json([
-                'message' => 'Error lista con el ' . $id . ' no se ha encontrado',
-            ], 400);
+                'message' => 'Error ¿existe la lista?',
+            ]);
         }
+        $idLista = $auxLista[0]->id;
 
+        $lista = $this->user->listas()->find($idLista);
         return $lista;
     }
 
@@ -52,13 +55,13 @@ class listasController extends protectedUserController
         // - usuario/personalida /P
         // - usuario/aleatorio   /R
         // - /aleatorio         /0
-
         $lista = new Listas();
 
-        if ($this->user->role == 0 || $this->user->role == 3) {
+        if ($this->user->role == 0 || $this->user->role == 2) {
             $lista->url = $this->user->name . '_' . $request->url;
 
         } else if ($this->user->role == 1) {
+
             $lista->url = $this->user->name . '_' . $this->random();
 
         } else {
@@ -68,8 +71,8 @@ class listasController extends protectedUserController
         $lista->titulo = $request->titulo;
         $lista->descripcion = $request->descripcion;
 
-        if ($this->user->role == 0 || $this->user->role == 3) {
-            $lista->passwordLista = $request->passwordLista;
+        if ($this->user->role == 0 || $this->user->role == 2) {
+            $lista->passwordLista = Hash::make($request->passwordLista);
         } else {
             $lista->passwordLista = null;
         }
@@ -95,7 +98,7 @@ class listasController extends protectedUserController
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 8; $i++) {
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
         return $randomString;
@@ -105,19 +108,44 @@ class listasController extends protectedUserController
      *  - EDITLISTA
      * - Edita una lista por id -> user
      */
-    public function editLista($id, Request $request)
+    public function editLista($url, Request $request)
     {
-        $lista = $this->user->listas()->find($id);
-
-        // - En caso de id erronea
-        if (!$id || !$lista) {
+        $urlRecibida = Listas::where('url', $url)->select('id')->get();
+        $auxLista = json_decode($urlRecibida);
+        if (empty($auxLista[0]->id)) {
             return response()->json([
-                'message' => 'Error la lista con el ' . $id . ' no se ha modificado o encontrado',
-            ], 400);
+                'message' => 'Error ¿existe la lista?',
+            ]);
+        }
+        $idLista = $auxLista[0]->id;
+
+        $lista = Listas::find($idLista);
+
+        if ($this->user->listas()->find($idLista)) {
+            if ($this->user->role == 0 || $this->user->role == 2) {
+                $lista->url = $this->user->name . '_' . $request->url;
+
+            } else if ($this->user->role == 1) {
+                $lista->url = $this->user->name . '_' . $this->random();
+
+            } else {
+                $lista->url = '_' . $this->random();
+            }
         }
 
-        $updated = $lista->fill($request->all())->save();
-        if ($updated) {
+        $lista->titulo = $request->titulo;
+        $lista->descripcion = $request->descripcion;
+        
+        if ($this->user->listas()->find($idLista)) {
+            if ($this->user->role == 0 || $this->user->role == 2) {
+                $lista->passwordLista = Hash::make($request->passwordLista);
+            } else {
+                $lista->passwordLista = null;
+            }
+        }
+        $lista->elementos = json_encode($request->elementos);
+
+        if ($lista->update()) {
             return response()->json([
                 'message' => 'Lista modificada correctamente',
                 'lista' => $lista,
@@ -133,17 +161,23 @@ class listasController extends protectedUserController
      *  - DElLIST
      * - Elimina una lista por el id si la tiene el user -> user
      */
-    public function delList($id)
+    public function delList($url)
     {
-        $lista = $this->user->listas()->find($id);
 
-        if (!$lista || !$id) {
+        $urlRecibida = Listas::where('url', $url)->select('id')->get();
+        $auxLista = json_decode($urlRecibida);
+
+        if (empty($auxLista[0]->id)) {
             return response()->json([
-                'message' => 'Error la lista no se ha encontrado',
-            ], 400);
+                'message' => 'Error ¿existe la lista?',
+            ]);
         }
+        $idLista = $auxLista[0]->id;
 
-        if ($lista->delete()) {
+        $lista = $this->user->listas()->find($idLista);
+
+        if ($lista) {
+            $lista->delete();
             return response()->json([
                 'message' => 'Lista eliminada correctamente',
             ]);
