@@ -58,6 +58,10 @@ class listasController extends protectedUserController
      */
     public function addLista(Request $request)
     {
+
+        // - usuario/personalida /P
+        // - usuario/aleatorio   /R
+        // - /aleatorio         /0
         $lista = new Listas();
         $lista->url = $request->url.'/'.$this->random();
         //$lista->url = $this->random();
