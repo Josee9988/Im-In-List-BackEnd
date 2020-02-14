@@ -4,19 +4,28 @@ namespace App\Http\Controllers;
 
 use App\Listas;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
-class noRegistradosListsController extends Controller
+class adminController extends Controller
 {
+
     /**
-     *  - GetListasByUrl
-     * - Devuelve la lista por la url
+     *  - Get Listas Admin
+     * - Devuelve todas las listas ->Admin
      */
-    public function getListUrl($url)
+    public function getListasAdmin()
     {
+        $listas = Listas::all()->toArray();
+        return $listas;
+    }
 
-        $urlRecibida = Listas::where('url', $url)->get();
-
-        // - Id de la lista para agregar participantes
+    /**
+     *  - Get info lista admin
+     * - Informacion de la lista especificada
+     */
+    public function infoListaAdmin($url)
+    {
+        $urlRecibida = Listas::where('url', $url)->select('id')->get();
         $auxLista = json_decode($urlRecibida);
         if (empty($auxLista[0]->id)) {
             return response()->json([
@@ -25,61 +34,14 @@ class noRegistradosListsController extends Controller
         }
         $idLista = $auxLista[0]->id;
 
-        $listas = Listas::find($idLista);
+        $lista = Listas::find($idLista);
 
-        return $listas;
-
+        return $lista;
     }
 
     /**
-     *  - AddListasNoRegistrado
-     * - Agrega una lista
-     */
-    public function addLista(Request $request)
-    {
-
-        // - usuario/personalida /P
-        // - usuario/aleatorio   /R
-        // - /aleatorio         /0
-
-        $lista = new Listas();
-
-        $lista->url = '_' . $this->random();
-
-        $lista->titulo = $request->titulo;
-        $lista->descripcion = $request->descripcion;
-
-        $lista->passwordLista = null;
-
-        $lista->elementos = json_encode($request->elementos);
-
-        if ($lista->save()) {
-            return response()->json([
-                'message' => 'Lista creada correctamente',
-                'lista' => $lista,
-            ]);
-        } else {
-            return response()->json([
-                'message' => 'Error la lista no se ha creado',
-            ], 500);
-        }
-
-    }
-    public function random()
-    {
-
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $charactersLength = strlen($characters);
-        $randomString = '';
-        for ($i = 0; $i < 10; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
-        }
-        return $randomString;
-    }
-
-    /**
-     *  - EDITLISTA
-     * - Edita una lista por id -> user
+     *  - Edit lista admin
+     * - Edita cualquier lista
      */
     public function editListaAdmin($url, Request $request)
     {
@@ -94,10 +56,12 @@ class noRegistradosListsController extends Controller
 
         $lista = Listas::find($idLista);
 
+        $lista->url = $request->url;
         $lista->titulo = $request->titulo;
         $lista->descripcion = $request->descripcion;
+        $lista->passwordLista = Hash::make($request->passwordLista);
         $lista->elementos = json_encode($request->elementos);
-
+        
         if ($lista->update()) {
             return response()->json([
                 'message' => 'Lista modificada correctamente',
@@ -111,13 +75,12 @@ class noRegistradosListsController extends Controller
     }
 
     /**
-     *  - DElLIST
-     * - Elimina una lista por el id si la tiene el user -> user
+     *  - Del lista admin
+     * - Elimina cualquier lista
      */
     public function delListAdmin($url)
     {
         $urlRecibida = Listas::where('url', $url)->select('id')->get();
-
         // - Id de la lista para agregar participantes
         $auxLista = json_decode($urlRecibida);
         if (empty($auxLista[0]->id)) {
@@ -139,4 +102,5 @@ class noRegistradosListsController extends Controller
             ], 500);
         }
     }
+
 }
