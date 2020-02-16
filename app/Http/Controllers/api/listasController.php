@@ -41,8 +41,8 @@ class listasController extends protectedUserController
         }
         $idLista = $auxLista[0]->id;
 
-        // - Tenemos la lista
-        $lista = $this->user->listas()->find($idLista);
+        // - Lista
+        $lista = Listas::find($idLista);
         return $lista;
     }
 

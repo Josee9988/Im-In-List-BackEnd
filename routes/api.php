@@ -23,10 +23,12 @@ Route::group(['middleware' => 'auth.jwt'], function () {
     Route::get('user', 'APIController@getAuthenticatedUser');
 
     // - Gesion de administracion de los participantes
+    /* - Fuera de servicio
     Route::get('participate', 'api\participaUsuariosController@getListasParticipa');
     Route::post('participate', 'api\participaUsuariosController@addUserToList');
     Route::delete('participate', 'api\participaUsuariosController@delParticipantes');
     Route::post('participateUsers', 'api\participaUsuariosController@getParticipantes'); // DIF
+    */
 
     Route::get('listas', 'api\listasController@getLista');
     Route::get('listas/{url}', 'api\listasController@infoLista');
