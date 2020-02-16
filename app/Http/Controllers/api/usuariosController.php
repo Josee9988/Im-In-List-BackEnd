@@ -76,28 +76,38 @@ class usuariosController extends protectedUserController
     {
         $usuario = User::find($id);
 
-        $usuario->name = $request->name;
-        $usuario->email = $request->email;
-        $usuario->password = Hash::make($request->password);
-        $usuario->role = $request->role;
-
-        // - En caso de id erronea
         if (!$id || !$usuario) {
             return response()->json([
-                'message' => 'Error la usuario con el ' . $id . ' no se ha modificado o encontrado',
+                'message' => 'Error la usuario con el ' . $id . ' no se ha encontrado',
             ], 400);
+        }
+
+        if ($this->user->role == 0) {
+            $usuario->name = $request->name;
+            $usuario->email = $request->email;
+            $usuario->password = Hash::make($request->password);
+            $usuario->role = $request->role;
+        } else if($this->user->id == $id) {
+            $usuario->name = $request->name;
+            $usuario->email = $request->email;
+            $usuario->password = Hash::make($request->password);
+            $usuario->role = $usuario->role;
+        }else{
+            return response()->json([
+                'message' => '¿Te crees admin?',
+            ]);
         }
 
         $updated = $usuario->save();
 
         if ($updated) {
             return response()->json([
-                'message' => 'usuario modificado correctamente',
+                'message' => 'Usuario modificado correctamente',
                 'user' => $usuario,
             ]);
         } else {
             return response()->json([
-                'message' => 'Error el usuario no se ha creado',
+                'message' => 'Error el usuario no se ha modificado',
             ], 500);
         }
     }
