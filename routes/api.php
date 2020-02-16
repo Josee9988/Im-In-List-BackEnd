@@ -36,6 +36,10 @@ Route::group(['middleware' => 'auth.jwt'], function () {
     Route::put('listas/{url}', 'api\listasController@editLista');
     Route::delete('listas/{url}', 'api\listasController@delList');
 
+    // - Para poder editar el usuario
+    Route::put('users/{id}', 'api\usuariosController@editUser');
+
+
     // - Admin -> controlar
     Route::group(['middleware' => 'admin'], function () {
 
@@ -45,10 +49,10 @@ Route::group(['middleware' => 'auth.jwt'], function () {
         Route::put('listasAdmin/{url}', 'adminController@editListaAdmin');
         Route::delete('listasAdmin/{url}', 'adminController@delListAdmin');
         
+        // - Gestion de usuarios
         Route::get('users', 'api\usuariosController@getUsers');
         Route::get('users/{id}', 'api\usuariosController@infoUser');
         Route::post('users', 'api\usuariosController@addUser');
-        Route::put('users/{id}', 'api\usuariosController@editUser');
         Route::delete('users/{id}', 'api\usuariosController@delUser');
 
     });
