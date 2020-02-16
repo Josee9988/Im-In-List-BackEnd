@@ -122,7 +122,10 @@ class listasController extends protectedUserController
 
         $lista = Listas::find($idLista);
 
+        // - URL
+        // - Si eres el dueño de la lista podras editar la url de tu lista
         if ($this->user->listas()->find($idLista)) {
+            // - Dependiendo de tu rol podras o no
             if ($this->user->role == 0 || $this->user->role == 2) {
                 $lista->url = $this->user->name . '_' . $request->url;
 
@@ -137,13 +140,17 @@ class listasController extends protectedUserController
         $lista->titulo = $request->titulo;
         $lista->descripcion = $request->descripcion;
 
+        // - PasswordLista
+        // - Si eres el dueño de la lista podras poner password a la lista
         if ($this->user->listas()->find($idLista)) {
+            // - Depende de tu rol podras o no
             if ($this->user->role == 0 || $this->user->role == 2) {
                 $lista->passwordLista = Hash::make($request->passwordLista);
             } else {
                 $lista->passwordLista = null;
             }
         }
+
         $lista->elementos = json_encode($request->elementos);
 
         if ($lista->update()) {
@@ -159,7 +166,7 @@ class listasController extends protectedUserController
     }
 
     /**
-     *  - DElLIST
+     *  - Del Lista
      * - Elimina una lista por el id si la tiene el user -> user
      */
     public function delList($url)

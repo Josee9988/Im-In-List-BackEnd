@@ -13,7 +13,7 @@ class usuariosController extends protectedUserController
 {
 
     /**
-     *  - GETUSERS
+     *  - Get users
      * - Devuelve los usuarios -> admin
      */
     public function getUsers()
@@ -24,8 +24,8 @@ class usuariosController extends protectedUserController
     }
 
     /**
-     *  - INFOUSER
-     * - Informacion de un usuario
+     *  - Info users
+     * - Informacion de un usuario -> admin
      */
     public function infoUser($id)
     {
@@ -44,8 +44,10 @@ class usuariosController extends protectedUserController
     }
 
     /**
-     *  - ADDUSER
-     * - Agrega un usuario ->user
+     *  - FUERA DE SERVICIO
+     * 
+     *  - Add user
+     * - Agrega un usuario -> admin
      */
     public function addUser(Request $request)
     {
@@ -69,8 +71,9 @@ class usuariosController extends protectedUserController
     }
 
     /**
-     *  - EDITUSER
-     * - Edita una lista por id -> user
+     *  - Edit user
+     * - Buscamos el usuario, si somos admin editaremos lo que dessemos
+     * - Si somos el propio usuario solo editara sus datos (role NO)
      */
     public function editUser($id, Request $request)
     {
@@ -113,11 +116,12 @@ class usuariosController extends protectedUserController
     }
 
     /**
-     *  - DELUSER
-     * - Elimina un usuario
+     *  - Del user
+     * - Elimina un usuario -> admin
      */
     public function delUser($id)
     {
+        // - Para buscar el usuario
         $usuario = $this->infoUser($id);
 
         // - En caso de id erronea
