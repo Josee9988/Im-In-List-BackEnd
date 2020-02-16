@@ -41,6 +41,7 @@ class listasController extends protectedUserController
         }
         $idLista = $auxLista[0]->id;
 
+        // - Tenemos la lista
         $lista = $this->user->listas()->find($idLista);
         return $lista;
     }
@@ -51,10 +52,10 @@ class listasController extends protectedUserController
      */
     public function addLista(Request $request)
     {
+        // - usuario_personalida -> 2 Premium
+        // - usuario_aleatorio   -> 1 Registrado
+        // - _aleatorio          -> inexistente No registrado
 
-        // - usuario/personalida /P
-        // - usuario/aleatorio   /R
-        // - /aleatorio         /0
         $lista = new Listas();
 
         if ($this->user->role == 0 || $this->user->role == 2) {
@@ -126,16 +127,16 @@ class listasController extends protectedUserController
                 $lista->url = $this->user->name . '_' . $request->url;
 
             } else if ($this->user->role == 1) {
-                $lista->url = $this->user->name . '_' . $this->random();
+                $lista->url = $lista->url;
 
             } else {
-                $lista->url = '_' . $this->random();
+                $lista->url = $lista->url;
             }
         }
 
         $lista->titulo = $request->titulo;
         $lista->descripcion = $request->descripcion;
-        
+
         if ($this->user->listas()->find($idLista)) {
             if ($this->user->role == 0 || $this->user->role == 2) {
                 $lista->passwordLista = Hash::make($request->passwordLista);

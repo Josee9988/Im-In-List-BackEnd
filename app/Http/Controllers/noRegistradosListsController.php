@@ -8,15 +8,14 @@ use Illuminate\Http\Request;
 class noRegistradosListsController extends Controller
 {
     /**
-     *  - GetListasByUrl
-     * - Devuelve la lista por la url
+     *  - Get lista 
+     * - Ve una lista por una url
      */
-    public function getListUrl($url)
+    public function getList($url)
     {
 
         $urlRecibida = Listas::where('url', $url)->get();
 
-        // - Id de la lista para agregar participantes
         $auxLista = json_decode($urlRecibida);
         if (empty($auxLista[0]->id)) {
             return response()->json([
@@ -25,6 +24,7 @@ class noRegistradosListsController extends Controller
         }
         $idLista = $auxLista[0]->id;
 
+        // - Lista
         $listas = Listas::find($idLista);
 
         return $listas;
@@ -32,15 +32,15 @@ class noRegistradosListsController extends Controller
     }
 
     /**
-     *  - AddListasNoRegistrado
-     * - Agrega una lista
+     *  - Agregar lista
+     * - Agrega una lista aunque no estes registrado
      */
     public function addLista(Request $request)
     {
 
-        // - usuario/personalida /P
-        // - usuario/aleatorio   /R
-        // - /aleatorio         /0
+        // - usuario_personalida -> 2 Premium
+        // - usuario_aleatorio   -> 1 Registrado
+        // - _aleatorio          -> inexistente No registrado
 
         $lista = new Listas();
 
@@ -78,10 +78,10 @@ class noRegistradosListsController extends Controller
     }
 
     /**
-     *  - EDITLISTA
-     * - Edita una lista por id -> user
+     *  - Editar 
+     * - Edita una lista por la ur -> usuario no reguistrado
      */
-    public function editListaAdmin($url, Request $request)
+    public function editLista($url, Request $request)
     {
         $urlRecibida = Listas::where('url', $url)->select('id')->get();
         $auxLista = json_decode($urlRecibida);
@@ -92,6 +92,7 @@ class noRegistradosListsController extends Controller
         }
         $idLista = $auxLista[0]->id;
 
+        // - Tenemos la lista
         $lista = Listas::find($idLista);
 
         $lista->titulo = $request->titulo;
@@ -111,14 +112,13 @@ class noRegistradosListsController extends Controller
     }
 
     /**
-     *  - DElLIST
-     * - Elimina una lista por el id si la tiene el user -> user
+     *  - Eliminar lista
+     * - Elimina la lista por url
      */
-    public function delListAdmin($url)
+    public function delList($url)
     {
         $urlRecibida = Listas::where('url', $url)->select('id')->get();
 
-        // - Id de la lista para agregar participantes
         $auxLista = json_decode($urlRecibida);
         if (empty($auxLista[0]->id)) {
             return response()->json([
@@ -127,6 +127,7 @@ class noRegistradosListsController extends Controller
         }
         $idLista = $auxLista[0]->id;
 
+        // - Tenemos la lista
         $lista = Listas::find($idLista);
 
         if ($lista->delete()) {
