@@ -45,7 +45,7 @@ class usuariosController extends protectedUserController
 
     /**
      *  - FUERA DE SERVICIO
-     * 
+     *
      *  - Add user
      * - Agrega un usuario -> admin
      */
@@ -84,20 +84,38 @@ class usuariosController extends protectedUserController
                 'message' => 'Error la usuario con el ' . $id . ' no se ha encontrado',
             ], 400);
         }
+        
+        json_decode($request->oldPassword);
+        json_decode($request->password);
 
+        
         if ($this->user->role == 0) {
             $usuario->name = $request->name;
             $usuario->email = $request->email;
-            //oldPassword
-            $usuario->password = Hash::make($request->password);
+
+            if (password_verify($request->oldPassword,$usuario->password)) {
+                $usuario->password = Hash::make($request->password);
+            } else {
+                return response()->json([
+                    'message' => 'Error, password antigua incorrecta',
+                ], 401);
+            }
 
             $usuario->role = $request->role;
-        } else if($this->user->id == $id) {
+        } else if ($this->user->id == $id) {
+
             $usuario->name = $request->name;
             $usuario->email = $request->email;
-            $usuario->password = Hash::make($request->password);
+
+            if (password_verify($request->oldPassword,$usuario->password)) {
+                $usuario->password = Hash::make($request->password);
+            } else {
+                return response()->json([
+                    'message' => 'Error, password antigua incorrecta',
+                ], 401);
+            }
             $usuario->role = $usuario->role;
-        }else{
+        } else {
             return response()->json([
                 'message' => '¿Te crees admin?',
             ]);
