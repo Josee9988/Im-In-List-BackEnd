@@ -88,7 +88,9 @@ class usuariosController extends protectedUserController
         if ($this->user->role == 0) {
             $usuario->name = $request->name;
             $usuario->email = $request->email;
+            //oldPassword
             $usuario->password = Hash::make($request->password);
+
             $usuario->role = $request->role;
         } else if($this->user->id == $id) {
             $usuario->name = $request->name;

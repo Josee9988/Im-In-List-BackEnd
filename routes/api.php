@@ -47,11 +47,3 @@ Route::group(['middleware' => 'auth.jwt'], function () {
 
     });
 });
-
-    // - Gesion de administracion de los participantes
-    /* - Fuera de servicio
-    Route::get('participate', 'api\participaUsuariosController@getListasParticipa');
-    Route::post('participate', 'api\participaUsuariosController@addUserToList');
-    Route::delete('participate', 'api\participaUsuariosController@delParticipantes');
-    Route::post('participateUsers', 'api\participaUsuariosController@getParticipantes'); // DIF
-     */
