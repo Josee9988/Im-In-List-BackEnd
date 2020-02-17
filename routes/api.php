@@ -16,6 +16,8 @@ Route::delete('list/{url}', 'noRegistradosListsController@delList');
 // - Autenticados requiere -> token
 Route::group(['middleware' => 'auth.jwt'], function () {
 
+    Route::get('refresh', 'APIController@refreshToken');
+
     // - Datos del usuario logeado
     Route::get('user', 'APIController@getAuthenticatedUser');
 
