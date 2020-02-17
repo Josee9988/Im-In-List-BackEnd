@@ -16,6 +16,8 @@ Route::delete('list/{url}', 'noRegistradosListsController@delList');
 // - Autenticados requiere -> token
 Route::group(['middleware' => 'auth.jwt'], function () {
 
+    Route::get('refresh', 'APIController@refreshToken');
+
     // - Datos del usuario logeado
     Route::get('user', 'APIController@getAuthenticatedUser');
 
@@ -47,11 +49,3 @@ Route::group(['middleware' => 'auth.jwt'], function () {
 
     });
 });
-
-    // - Gesion de administracion de los participantes
-    /* - Fuera de servicio
-    Route::get('participate', 'api\participaUsuariosController@getListasParticipa');
-    Route::post('participate', 'api\participaUsuariosController@addUserToList');
-    Route::delete('participate', 'api\participaUsuariosController@delParticipantes');
-    Route::post('participateUsers', 'api\participaUsuariosController@getParticipantes'); // DIF
-     */

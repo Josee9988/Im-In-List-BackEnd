@@ -84,16 +84,16 @@ class APIController extends Controller
         try {
 
             if (!$user = JWTAuth::parseToken()->authenticate()) {
-                return response()->json(['user_not_found'], 404);
+                return response()->json(['usuario no encontrado'], 404);
             }
 
         } catch (TokenExpiredException $e) {
 
-            return response()->json(['token_expired']);
+            return response()->json(['Token_expirado']);
 
         } catch (TokenInvalidException $e) {
 
-            return response()->json(['token_invalid']);
+            return response()->json(['Token_invalido']);
 
         } catch (JWTException $e) {
 
