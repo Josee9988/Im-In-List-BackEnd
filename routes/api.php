@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 
 // - C O R S -> activado para todas las rutas
 
+Route::post('sendEmail','emailController@gestionEmail');
+
 Route::post('login', 'APIController@login');
 Route::post('register', 'APIController@register');
 
