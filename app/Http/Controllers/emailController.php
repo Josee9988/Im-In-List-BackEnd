@@ -10,14 +10,10 @@ class emailController extends Controller
 {
     public function gestionEmail(Request $request){
 
-        $data = array(
-            'name'=>'prueba'
-        );
+        Mail::send('mail',$request->contenido,function($message){
 
-        Mail::send('mail',$data,function($message){
-
-            $message->from('a@gmail.com');
-            $message->to('admiminlist@gmail.com');
+            $message->from('$request->email');
+            $message->to('admiminlist@gmail.com')->subject();
         });
 
     }
