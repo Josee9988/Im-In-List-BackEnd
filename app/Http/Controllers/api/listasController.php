@@ -248,8 +248,8 @@ class listasController extends protectedUserNullController
                 }
             }
 
-            $lista->titulo = $lista->titulo;
-            $lista->descripcion = $lista->descripcion;
+            $lista->titulo = $request->titulo;
+            $lista->descripcion = $request->descripcion;
 
             // - PasswordLista
             // - Si eres el dueño de la lista podras poner password a la lista
@@ -268,7 +268,12 @@ class listasController extends protectedUserNullController
 
             return $lista;
 
-        }else{
+        } else {
+
+            $lista->url = $lista->url;
+            $lista->titulo = $lista->titulo;
+            $lista->descripcion = $lista->descripcion;
+            $lista->passwordLista = $lista->passwordLista;
             $lista->elementos = json_encode($request->elementos);
 
             return $lista;
@@ -301,7 +306,7 @@ class listasController extends protectedUserNullController
             ]);
         } else {
             return response()->json([
-                'message' => 'Error la lista no se ha eliminado',
+                'message' => 'Error la lista no se ha eliminado, eres el creador',
             ], 500);
         }
     }
