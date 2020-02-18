@@ -10,6 +10,7 @@ Route::post('login', 'APIController@login');
 Route::post('register', 'APIController@register');
 
 // - No registrados
+
 Route::get('list/{url}', 'noRegistradosListsController@getList');
 Route::post('list', 'noRegistradosListsController@addLista');
 Route::put('list/{url}', 'noRegistradosListsController@editLista');
