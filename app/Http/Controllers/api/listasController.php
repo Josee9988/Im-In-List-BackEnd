@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 /**
  *  - Extiende de controlador padre
  */
-class listasController extends protectedUserController
+class listasController extends protectedUserNullController
 {
 
     /**
@@ -20,7 +20,13 @@ class listasController extends protectedUserController
     {
 
         //array_push($listas, $this->user->listas()->get());
-        $listas = $this->user->listas()->get()->toArray();
+        if ($this->user) {
+            $listas = $this->user->listas()->get()->toArray();
+        } else {
+            return response()->json([
+                'message' => 'Este usuario no esta registrado',
+            ]);
+        }
 
         return $listas;
 
@@ -102,40 +108,69 @@ class listasController extends protectedUserController
 
         $lista = new Listas();
 
-        if ($this->user->role == 0 || $this->user->role == 2) {
-            $lista->url = $this->user->name . '_' . $request->url;
+        if ($this->user) {
 
-        } else if ($this->user->role == 1) {
-
-            $lista->url = $this->user->name . '_' . $this->random();
-
-        } else {
-            $lista->url = '_' . $this->random();
-        }
-
-        $lista->titulo = $request->titulo;
-        $lista->descripcion = $request->descripcion;
-
-        if (!empty($request->passwordLista)) {
             if ($this->user->role == 0 || $this->user->role == 2) {
-                $lista->passwordLista = Hash::make($request->passwordLista);
+                $lista->url = $this->user->name . '_' . $request->url;
+
+            } else if ($this->user->role == 1) {
+
+                $lista->url = $this->user->name . '_' . $this->random();
+
+            } else {
+                $lista->url = '_' . $this->random();
             }
+
+            $lista->titulo = $request->titulo;
+            $lista->descripcion = $request->descripcion;
+
+            if (!empty($request->passwordLista)) {
+                if ($this->user->role == 0 || $this->user->role == 2) {
+                    $lista->passwordLista = Hash::make($request->passwordLista);
+                }
+            } else {
+                $lista->passwordLista = null;
+            }
+
+            $lista->elementos = json_encode($request->elementos);
+
+            if ($this->user->listas()->save($lista)) {
+                return response()->json([
+                    'message' => 'Lista creada correctamente',
+                    'lista' => $lista,
+                ]);
+            } else {
+                return response()->json([
+                    'message' => 'Error la lista no se ha creado',
+                ], 500);
+            }
+
         } else {
+
+            $lista->url = '_' . $this->random();
+
+            $lista->titulo = $request->titulo;
+            $lista->descripcion = $request->descripcion;
+
             $lista->passwordLista = null;
+
+            $lista->elementos = json_encode($request->elementos);
+
+            if ($lista->save()) {
+                return response()->json([
+                    'message' => 'Lista creada correctamente',
+                    'lista' => $lista,
+                ]);
+            } else {
+                return response()->json([
+                    'message' => 'Error la lista no se ha creado',
+                ], 500);
+            }
         }
 
-        $lista->elementos = json_encode($request->elementos);
-
-        if ($this->user->listas()->save($lista)) {
-            return response()->json([
-                'message' => 'Lista creada correctamente',
-                'lista' => $lista,
-            ]);
-        } else {
-            return response()->json([
-                'message' => 'Error la lista no se ha creado',
-            ], 500);
-        }
+        return response()->json([
+            'message' => 'Error grave',
+        ], 500);
 
     }
 
@@ -191,44 +226,53 @@ class listasController extends protectedUserController
             ], 500);
         }
     }
+
     public function editar($idLista, $request)
     {
         $lista = Listas::find($idLista);
 
-        // - URL
-        // - Si eres el dueño de la lista podras editar la url de tu lista
-        if ($this->user->listas()->find($idLista)) {
-            // - Dependiendo de tu rol podras o no
-            if ($this->user->role == 0 || $this->user->role == 2) {
-                $lista->url = $this->user->name . '_' . $request->url;
+        if ($this->user) {
 
-            } else if ($this->user->role == 1) {
-                $lista->url = $lista->url;
+            // - URL
+            // - Si eres el dueño de la lista podras editar la url de tu lista
+            if ($this->user->listas()->find($idLista)) {
+                // - Dependiendo de tu rol podras o no
+                if ($this->user->role == 0 || $this->user->role == 2) {
+                    $lista->url = $this->user->name . '_' . $request->url;
 
-            } else {
-                $lista->url = $lista->url;
+                } else if ($this->user->role == 1) {
+                    $lista->url = $lista->url;
+
+                } else {
+                    $lista->url = $lista->url;
+                }
             }
-        }
 
-        $lista->titulo = $request->titulo;
-        $lista->descripcion = $request->descripcion;
+            $lista->titulo = $lista->titulo;
+            $lista->descripcion = $lista->descripcion;
 
-        // - PasswordLista
-        // - Si eres el dueño de la lista podras poner password a la lista
-        if ($this->user->listas()->find($idLista)) {
-            // - Depende de tu rol podras o no
-            if ($this->user->role == 0 || $this->user->role == 2) {
-                $lista->passwordLista = Hash::make($request->passwordLista);
-            } else if ($lista->passwordLista != null) {
-                $lista->passwordLista = $lista->passwordLista;
-            } else {
-                $lista->passwordLista = null;
+            // - PasswordLista
+            // - Si eres el dueño de la lista podras poner password a la lista
+            if ($this->user->listas()->find($idLista)) {
+                // - Depende de tu rol podras o no
+                if ($this->user->role == 0 || $this->user->role == 2) {
+                    $lista->passwordLista = Hash::make($request->passwordLista);
+                } else if ($lista->passwordLista != null) {
+                    $lista->passwordLista = $lista->passwordLista;
+                } else {
+                    $lista->passwordLista = null;
+                }
             }
+
+            $lista->elementos = json_encode($request->elementos);
+
+            return $lista;
+
+        }else{
+            $lista->elementos = json_encode($request->elementos);
+
+            return $lista;
         }
-
-        $lista->elementos = json_encode($request->elementos);
-
-        return $lista;
     }
 
     /**

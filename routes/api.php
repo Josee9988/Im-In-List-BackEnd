@@ -4,17 +4,18 @@ use Illuminate\Support\Facades\Route;
 
 // - C O R S -> activado para todas las rutas
 
-Route::post('sendEmail','emailController@gestionEmail');
+Route::post('sendEmail', 'emailController@gestionEmail');
 
 Route::post('login', 'APIController@login');
 Route::post('register', 'APIController@register');
 
-// - No registrados
-
-Route::get('list/{url}', 'noRegistradosListsController@getList');
-Route::post('list', 'noRegistradosListsController@addLista');
-Route::put('list/{url}', 'noRegistradosListsController@editLista');
-Route::delete('list/{url}', 'noRegistradosListsController@delList');
+// - Gestion de listas para los usuarios
+Route::get('listas', 'api\listasController@getLista');
+Route::get('listas/{url}', 'api\listasController@infoLista');
+Route::get('listas/{url}/{listaAuth}', 'api\listasController@infoListaPassword');
+Route::post('listas', 'api\listasController@addLista');
+Route::put('listas/{url}', 'api\listasController@editLista');
+Route::delete('listas/{url}', 'api\listasController@delList');
 
 // - Autenticados requiere -> token
 Route::group(['middleware' => 'auth.jwt'], function () {
@@ -26,14 +27,6 @@ Route::group(['middleware' => 'auth.jwt'], function () {
 
     // - Para poder editar el usuario
     Route::put('users/{id}', 'api\usuariosController@editUser');
-
-    // - Gestion de listas para los usuarios
-    Route::get('listas', 'api\listasController@getLista');
-    Route::get('listas/{url}', 'api\listasController@infoLista');
-    Route::get('listas/{url}/{listaAuth}', 'api\listasController@infoListaPassword');
-    Route::post('listas', 'api\listasController@addLista');
-    Route::put('listas/{url}', 'api\listasController@editLista');
-    Route::delete('listas/{url}', 'api\listasController@delList');
 
     // - Admin
     Route::group(['middleware' => 'admin'], function () {
