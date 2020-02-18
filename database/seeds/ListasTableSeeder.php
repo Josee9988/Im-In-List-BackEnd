@@ -18,7 +18,6 @@ class ListasTableSeeder extends Seeder
             'descripcion' => 'La lista de Borja',
             'passwordLista' => Hash::make('1234'),
             'elementos' => str_replace("'", "\'", json_encode(['Comprar platanos', 'Comprar Melocotones'])),
-            /*'participantes' => 0,*/
             'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
             'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
@@ -30,7 +29,6 @@ class ListasTableSeeder extends Seeder
             'descripcion' => 'La lista de Jose',
             'passwordLista' => Hash::make('1234'),
             'elementos' => str_replace("'", "\'", json_encode(['Comprar agua', 'Comprar lapices'])),
-            /*'participantes' => 1,*/
             'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
             'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
@@ -41,52 +39,20 @@ class ListasTableSeeder extends Seeder
             'titulo' => 'Lista Registrado',
             'descripcion' => 'La lista de Registradp',
             'passwordLista' => Hash::make('1234'),
-            /*'participantes' => 1,*/
             'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
             'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
 
         DB::table('listas')->insert([
             'user_id' => 2,
-            'URL' => 'Jose_UrlJoseList2',
+            'URL' => 'Jose_JoseList2',
             'titulo' => 'Lista JOSE 2',
             'descripcion' => 'La lista de OJSE',
             'passwordLista' => Hash::make('1234'),
-            /*'participantes' => 1,*/
             'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
             'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
 
-        DB::table('listas')->insert([
-            'user_id' => 2,
-            'URL' => 'Jose_UrlJoseList2',
-            'titulo' => 'Lista JOSE 2',
-            'descripcion' => 'La lista de OJSE',
-            'passwordLista' => Hash::make('1234'),
-            /*'participantes' => 1,*/
-            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
-            'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
-        ]);
-        DB::table('listas')->insert([
-            'user_id' => 2,
-            'URL' => 'Jose_UrlJoseList2',
-            'titulo' => 'Lista JOSE 2',
-            'descripcion' => 'La lista de OJSE',
-            'passwordLista' => Hash::make('1234'),
-            /*'participantes' => 1,*/
-            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
-            'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
-        ]);
-        DB::table('listas')->insert([
-            'user_id' => 2,
-            'URL' => 'Jose_UrlJoseList2',
-            'titulo' => 'Lista JOSE 2',
-            'descripcion' => 'La lista de OJSE',
-            'passwordLista' => Hash::make('1234'),
-            /*'participantes' => 1,*/
-            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
-            'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
-        ]);
     }
 
     public function random()

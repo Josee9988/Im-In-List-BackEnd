@@ -85,9 +85,6 @@ class usuariosController extends protectedUserController
             ], 400);
         }
         
-        json_decode($request->oldPassword);
-        json_decode($request->password);
-
         
         if ($this->user->role == 0) {
             $usuario->name = $request->name;

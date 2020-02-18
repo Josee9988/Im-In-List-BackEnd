@@ -28,7 +28,7 @@ Route::group(['middleware' => 'auth.jwt'], function () {
 
     // - Gestion de listas para los usuarios
     Route::get('listas', 'api\listasController@getLista');
-    Route::get('listas/{url}', 'api\listasController@infoLista');
+    Route::post('listas/{url}', 'api\listasController@infoLista');
     Route::post('listas', 'api\listasController@addLista');
     Route::put('listas/{url}', 'api\listasController@editLista');
     Route::delete('listas/{url}', 'api\listasController@delList');
