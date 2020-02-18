@@ -22,7 +22,6 @@ class CreateListasTable extends Migration
             $table->string('descripcion')->nullable()->default('Nueva_descripcion');
             $table->string('passwordLista')->nullable();
             $table->json('elementos')->nullable();
-            $table->Integer('participantes')->nullable()->default(0);
             $table->timestamps();
         });
 

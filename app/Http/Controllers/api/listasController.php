@@ -43,6 +43,7 @@ class listasController extends protectedUserController
         // - Lista
         $lista = Listas::find($idLista);
 
+        dd($request->listaAuth);
         if ($lista->passwordLista != null) {
             if (password_verify($request->listaAuth, $lista->passwordLista)) {
                 return $lista;
@@ -82,9 +83,11 @@ class listasController extends protectedUserController
         $lista->titulo = $request->titulo;
         $lista->descripcion = $request->descripcion;
 
-        if ($this->user->role == 0 || $this->user->role == 2) {
-            $lista->passwordLista = Hash::make($request->passwordLista);
-        } else if (empty($request->passwordLista)) {
+        if (!empty($request->passwordLista)) {
+            if ($this->user->role == 0 || $this->user->role == 2) {
+                $lista->passwordLista = Hash::make($request->passwordLista);
+            }
+        } else {
             $lista->passwordLista = null;
         }
 
