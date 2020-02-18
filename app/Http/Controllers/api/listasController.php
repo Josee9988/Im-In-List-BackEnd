@@ -30,7 +30,7 @@ class listasController extends protectedUserController
      *  - INFOLISTA
      * - Informacion de una lista si la ha creado el usuario -> user
      */
-    public function infoLista($url, Request $request)
+    public function infoListaPassword($url, $listaAuth)
     {
         $urlRecibida = Listas::where('url', $url)->select('id')->get();
         $auxLista = json_decode($urlRecibida);
@@ -43,15 +43,48 @@ class listasController extends protectedUserController
         // - Lista
         $lista = Listas::find($idLista);
 
-        dd($request->listaAuth);
         if ($lista->passwordLista != null) {
-            if (password_verify($request->listaAuth, $lista->passwordLista)) {
+            if (empty($listaAuth)) {
+                return response()->json([
+                    'message' => 'Error, indique la contraseña de la lista',
+                ]);
+            }
+
+            if (password_verify($listaAuth, $lista->passwordLista)) {
                 return $lista;
             } else {
                 return response()->json([
                     'message' => 'Error, indique la contraseña de la lista',
                 ]);
             }
+        }
+        return $lista;
+
+    }
+
+    /**
+     *  - INFOLISTA
+     * - Informacion de una lista si la ha creado el usuario -> user
+     */
+    public function infoLista($url)
+    {
+        $urlRecibida = Listas::where('url', $url)->select('id')->get();
+        $auxLista = json_decode($urlRecibida);
+        if (empty($auxLista[0]->id)) {
+            return response()->json([
+                'message' => 'Error ¿existe la lista?',
+            ]);
+        }
+        $idLista = $auxLista[0]->id;
+        // - Lista
+        $lista = Listas::find($idLista);
+
+        if ($lista->passwordLista != null) {
+
+            return response()->json([
+                'message' => 'Error, indique la contraseña de la lista',
+            ]);
+
         }
         return $lista;
 
