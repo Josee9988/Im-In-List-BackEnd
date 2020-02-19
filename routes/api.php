@@ -28,6 +28,8 @@ Route::group(['middleware' => 'auth.jwt'], function () {
     // - Para poder editar el usuario
     Route::put('users/{id}', 'api\usuariosController@editUser');
 
+    Route::get('pago', 'paymentController@execute');
+
     // - Admin
     Route::group(['middleware' => 'admin'], function () {
 

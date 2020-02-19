@@ -233,12 +233,17 @@ class listasController extends protectedUserNullController
 
         if ($this->user) {
 
+
+            /***
+             * ***
+             * AQUIIIIIIIIIIIIIIIIIIII
+             */
             // - URL
             // - Si eres el dueño de la lista podras editar la url de tu lista
             if ($this->user->listas()->find($idLista)) {
                 // - Dependiendo de tu rol podras o no
                 if ($this->user->role == 0 || $this->user->role == 2) {
-                    $lista->url = $this->user->name . '_' . $request->url;
+                    
 
                 } else if ($this->user->role == 1) {
                     $lista->url = $lista->url;
@@ -247,7 +252,7 @@ class listasController extends protectedUserNullController
                     $lista->url = $lista->url;
                 }
             }
-
+            $lista->url = $lista->url;
             $lista->titulo = $request->titulo;
             $lista->descripcion = $request->descripcion;
 
