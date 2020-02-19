@@ -231,42 +231,31 @@ class listasController extends protectedUserNullController
     {
         $lista = Listas::find($idLista);
 
+        
         if ($this->user) {
 
-
-            /***
-             * ***
-             * AQUIIIIIIIIIIIIIIIIIIII
-             */
-            // - URL
-            // - Si eres el dueño de la lista podras editar la url de tu lista
-            if ($this->user->listas()->find($idLista)) {
-                // - Dependiendo de tu rol podras o no
-                if ($this->user->role == 0 || $this->user->role == 2) {
-                    
-
-                } else if ($this->user->role == 1) {
-                    $lista->url = $lista->url;
-
-                } else {
-                    $lista->url = $lista->url;
-                }
-            }
             $lista->url = $lista->url;
             $lista->titulo = $request->titulo;
             $lista->descripcion = $request->descripcion;
 
-            // - PasswordLista
-            // - Si eres el dueño de la lista podras poner password a la lista
-            if ($this->user->listas()->find($idLista)) {
-                // - Depende de tu rol podras o no
-                if ($this->user->role == 0 || $this->user->role == 2) {
-                    $lista->passwordLista = Hash::make($request->passwordLista);
-                } else if ($lista->passwordLista != null) {
-                    $lista->passwordLista = $lista->passwordLista;
-                } else {
-                    $lista->passwordLista = null;
+            
+            if (isset($request->passwordLista)) {
+                // - PasswordLista
+                // - Si eres el dueño de la lista podras poner password a la lista
+                if ($this->user->listas()->find($idLista)) {
+                    // - Depende de tu rol podras o no
+                    if ($this->user->role == 0 || $this->user->role == 2) {
+                        $lista->passwordLista = Hash::make($request->passwordLista);
+
+                    } else if ($lista->passwordLista != null) {
+                        $lista->passwordLista = $lista->passwordLista;
+
+                    } else {
+                        $lista->passwordLista = null;
+                    }
                 }
+            } else {
+                $lista->passwordLista = null;
             }
 
             $lista->elementos = json_encode($request->elementos);
