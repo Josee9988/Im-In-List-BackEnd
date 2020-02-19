@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\api;
+use App\Http\Controllers\Controller;
 
 use App\Mail\contactoAdmin;
 use Illuminate\Http\Request;

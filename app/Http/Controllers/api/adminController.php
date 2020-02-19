@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\api;
+use App\Http\Controllers\Controller;
 
 use App\Listas;
 use Illuminate\Http\Request;
