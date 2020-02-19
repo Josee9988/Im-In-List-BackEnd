@@ -9,9 +9,6 @@ use Illuminate\Support\Facades\Mail;
 class emailController extends Controller
 {
 
-    private $private_key = '6Ld6lNkUAAAAAHNAgT-wdW4E7efCRfwJdWolGRJZ';
-    private $url = 'https://www.google.com/recaptcha/api/siteverify';
-
     public function gestionEmail(Request $request)
     {
         $peticionUrl = file_get_contents($this->url . '?secret=' . $this->private_key . '&response=' . $request->captcha);
