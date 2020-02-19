@@ -9,5 +9,8 @@ use Illuminate\Routing\Controller as BaseController;
 
 class Controller extends BaseController
 {
+    private $private_key = '6Ld6lNkUAAAAAHNAgT-wdW4E7efCRfwJdWolGRJZ';
+    private $url = 'https://www.google.com/recaptcha/api/siteverify';
+
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 }

@@ -22,17 +22,26 @@ class APIController extends Controller
      */
     public function register(Request $request)
     {
+        $peticionUrl = file_get_contents($this->url . '?secret=' . $this->private_key . '&response=' . $request->captcha);
+        $estadoCaptcha = json_decode($peticionUrl)->success;
 
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
-        $user->role = 1;
-        $user->save();
+        if ($estadoCaptcha) {
+            $user = new User();
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = bcrypt($request->password);
+            $user->role = 1;
+            $user->save();
 
-        $token = JWTAuth::fromUser($user);
+            $token = JWTAuth::fromUser($user);
 
-        return response()->json(compact('user', 'token'), 201);
+            return response()->json(compact('user', 'token'), 201);
+
+        } else {
+            return response()->json([
+                'message' => 'Error, Actividad sospechosa',
+            ]);
+        }
 
     }
 

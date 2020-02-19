@@ -85,9 +85,6 @@ class usuariosController extends protectedUserController
             ], 400);
         }
         
-        json_decode($request->oldPassword);
-        json_decode($request->password);
-
         
         if ($this->user->role == 0) {
             $usuario->name = $request->name;
@@ -95,13 +92,18 @@ class usuariosController extends protectedUserController
 
             if (password_verify($request->oldPassword,$usuario->password)) {
                 $usuario->password = Hash::make($request->password);
-            } else {
+
+            } else if(empty($request->oldPassword)){
+                $usuario->password = $usuario->password;
+                
+            }else{
                 return response()->json([
-                    'message' => 'Error, password antigua incorrecta',
+                    'message' => 'Error, password antigua incorrecta Admin',
                 ], 401);
             }
 
             $usuario->role = $request->role;
+
         } else if ($this->user->id == $id) {
 
             $usuario->name = $request->name;
@@ -109,12 +111,16 @@ class usuariosController extends protectedUserController
 
             if (password_verify($request->oldPassword,$usuario->password)) {
                 $usuario->password = Hash::make($request->password);
-            } else {
+
+            } else if(empty($request->oldPassword)){
+                $usuario->password = $usuario->password;
+            }else{
                 return response()->json([
                     'message' => 'Error, password antigua incorrecta',
                 ], 401);
             }
             $usuario->role = $usuario->role;
+
         } else {
             return response()->json([
                 'message' => '¿Te crees admin?',
