@@ -231,19 +231,16 @@ class listasController extends protectedUserNullController
     {
         $lista = Listas::find($idLista);
 
-        
         if ($this->user) {
 
             $lista->url = $lista->url;
             $lista->titulo = $request->titulo;
             $lista->descripcion = $request->descripcion;
 
-            
             if (isset($request->passwordLista)) {
                 // - PasswordLista
                 // - Si eres el dueño de la lista podras poner password a la lista
                 if ($this->user->listas()->find($idLista)) {
-                    // - Depende de tu rol podras o no
                     if ($this->user->role == 0 || $this->user->role == 2) {
                         $lista->passwordLista = Hash::make($request->passwordLista);
 
