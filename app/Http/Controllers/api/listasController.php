@@ -276,8 +276,8 @@ class listasController extends protectedUserNullController
         } else {
 
             $lista->url = $lista->url;
-            $lista->titulo = $lista->titulo;
-            $lista->descripcion = $lista->descripcion;
+            $lista->titulo = $request->titulo;
+            $lista->descripcion = $request->descripcion;
             $lista->passwordLista = $lista->passwordLista;
             $lista->elementos = json_encode($request->elementos);
 
