@@ -30,3 +30,23 @@ class RegistrationFormRequest extends FormRequest
         ];
     }
 }
+
+/**
+ *
+ * EMAIL
+ * email max 255
+ * asunto min 6 max 80
+ * mensaje min 10 max 516
+ *
+ * LISTA
+ * titulo min 4 max 6
+ * desc min 4 max 6
+ * password min 4
+ *
+ * REg/log
+ * email max 255
+ * pass min 4
+ * nombre min 4 max 60
+ *
+ *
+ */
