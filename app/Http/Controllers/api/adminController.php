@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\api;
-use App\Http\Controllers\Controller;
 
+use App\Http\Controllers\Controller;
 use App\Listas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -11,8 +11,10 @@ class adminController extends Controller
 {
 
     /**
-     *  - Get Listas Admin
-     * - Devuelve todas las listas ->Admin
+     * getListasAdmin
+     * Summary: Devuelve todas las listas ->Admin
+     *
+     * @return void
      */
     public function getListasAdmin()
     {
@@ -21,87 +23,83 @@ class adminController extends Controller
     }
 
     /**
-     *  - Get info lista admin
-     * - Informacion de la lista especificada
+     * infoListaAdmin
+     * Summary: Informacion de la lista especificada
+     *
+     * @param  mixed $url - Mediante la url se cogera el id de la lista a mostrar
+     *
+     * @return void
      */
     public function infoListaAdmin($url)
     {
         $urlRecibida = Listas::where('url', $url)->select('id')->get();
         $auxLista = json_decode($urlRecibida);
         if (empty($auxLista[0]->id)) {
-            return response()->json([
-                'message' => 'Error ¿existe la lista?',
-            ]);
+            return response()->json(['message' => 'Error ¿existe la lista?']);
         }
         $idLista = $auxLista[0]->id;
-
         $lista = Listas::find($idLista);
-
         return $lista;
     }
 
     /**
-     *  - Edit lista admin
-     * - Edita cualquier lista
+     * editListaAdmin
+     * Summary: Edita cualquier lista
+     *
+     * @param  mixed $url      - Url(id) para editar la lista
+     * @param  mixed $request  - Datos que recibe para modificar la lista
+     *
+     * @return void
      */
     public function editListaAdmin($url, Request $request)
     {
         $urlRecibida = Listas::where('url', $url)->select('id')->get();
         $auxLista = json_decode($urlRecibida);
         if (empty($auxLista[0]->id)) {
-            return response()->json([
-                'message' => 'Error ¿existe la lista?',
-            ]);
+            return response()->json(['message' => 'Error ¿existe la lista?']);
         }
         $idLista = $auxLista[0]->id;
 
         $lista = Listas::find($idLista);
-
         $lista->url = $request->url;
         $lista->titulo = $request->titulo;
         $lista->descripcion = $request->descripcion;
         $lista->passwordLista = Hash::make($request->passwordLista);
         $lista->elementos = json_encode($request->elementos);
-        
+
         if ($lista->update()) {
             return response()->json([
                 'message' => 'Lista modificada correctamente',
-                'lista' => $lista,
-            ]);
+                'lista' => $lista]);
         } else {
             return response()->json([
-                'message' => 'Error la lista no se ha creado',
-            ], 500);
+                'message' => 'Error la lista no se ha creado'], 500);
         }
     }
 
     /**
-     *  - Del lista admin
-     * - Elimina cualquier lista
+     * delListAdmin
+     * Summary: Elimina cualquier lista
+     *
+     * @param  mixed $url(id) -Url de la lista a eliminar
+     *
+     * @return void
      */
     public function delListAdmin($url)
     {
         $urlRecibida = Listas::where('url', $url)->select('id')->get();
-        // - Id de la lista para agregar participantes
         $auxLista = json_decode($urlRecibida);
         if (empty($auxLista[0]->id)) {
-            return response()->json([
-                'message' => 'Error ¿existe la lista?',
-            ]);
+            return response()->json(['message' => 'Error ¿existe la lista?']);
         }
         $idLista = $auxLista[0]->id;
 
         $lista = Listas::find($idLista);
-
         if ($lista->delete()) {
             return response()->json([
-                'message' => 'Lista eliminada correctamente',
-            ]);
-        } else {
-            return response()->json([
-                'message' => 'Error la lista no se ha eliminado',
-            ], 500);
+                'message' => 'Lista eliminada correctamente']);
         }
+        return response()->json(['message' => 'Error la lista no se ha eliminado'], 500);
     }
 
 }

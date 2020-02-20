@@ -11,94 +11,92 @@ use Illuminate\Support\Facades\Hash;
  */
 class listasController extends protectedUserNullController
 {
-
     /**
-     *  - GETLISTAS
-     * - Devuelve las listas que ha creado el usuario -> user
+     * getLista
+     * Summary: Devuelve las listas que ha creado el usuario
+     *
+     * @return void
      */
     public function getLista()
     {
-
-        //array_push($listas, $this->user->listas()->get());
         if ($this->user) {
             $listas = $this->user->listas()->get()->toArray();
         } else {
-            return response()->json([
-                'message' => 'Este usuario no esta registrado',
-            ]);
+            return response()->json(['message' => 'Este usuario no esta registrado']);
         }
-
         return $listas;
-
     }
 
     /**
-     *  - INFOLISTA
-     * - Informacion de una lista si la ha creado el usuario -> user
+     * infoListaPassword
+     * Summary: Delvuelve un lista por la url, se ha de pasar la password
+     *
+     * @param  mixed $url       -Url(id) a buscar
+     * @param  mixed $listaAuth -Password que se pasa para acceder
+     *
+     * @return void
      */
     public function infoListaPassword($url, $listaAuth)
     {
         $urlRecibida = Listas::where('url', $url)->select('id')->get();
         $auxLista = json_decode($urlRecibida);
+
         if (empty($auxLista[0]->id)) {
-            return response()->json([
-                'message' => 'Error ¿existe la lista?',
-            ]);
+            return response()->json(['message' => 'Error ¿existe la lista?']);
         }
+
         $idLista = $auxLista[0]->id;
-        // - Lista
         $lista = Listas::find($idLista);
 
         if ($lista->passwordLista != null) {
             if (empty($listaAuth)) {
-                return response()->json([
-                    'message' => 'Error, indique la contraseña de la lista',
-                ]);
+                return response()->json(['message' => 'Error, indique la contraseña de la lista']);
             }
-
             if (password_verify($listaAuth, $lista->passwordLista)) {
                 return $lista;
             } else {
-                return response()->json([
-                    'message' => 'Error, indique la contraseña de la lista',
-                ]);
+                return response()->json(['message' => 'Error, indique la contraseña de la lista']);
             }
         }
         return $lista;
-
     }
 
     /**
-     *  - INFOLISTA
-     * - Informacion de una lista si la ha creado el usuario -> user
+     * infoLista
+     * Summary: Delvuelve un lista por la url
+     *  En caso de tener password la lista se ejecutara otra funcion
+     *
+     * @param  mixed $url -Url(id) a buscar
+     *
+     * @return void
      */
     public function infoLista($url)
     {
         $urlRecibida = Listas::where('url', $url)->select('id')->get();
         $auxLista = json_decode($urlRecibida);
+
         if (empty($auxLista[0]->id)) {
-            return response()->json([
-                'message' => 'Error ¿existe la lista?',
-            ]);
+            return response()->json(['message' => 'Error ¿existe la lista?']);
         }
+
         $idLista = $auxLista[0]->id;
-        // - Lista
         $lista = Listas::find($idLista);
 
         if ($lista->passwordLista != null) {
-
-            return response()->json([
-                'message' => 'Error, indique la contraseña de la lista',
-            ]);
-
+            return response()->json(['message' => 'Error, indique la contraseña de la lista']);
         }
         return $lista;
-
     }
 
     /**
-     *  - ADDLISTA
-     * - Agrega una lista ->user
+     * addLista
+     * Summary: Agrega una lista
+     * Depende del tipo de usuario: Rol(0,1,2)
+     *  tendra unas opciones u otras
+     *
+     * @param  mixed $request
+     *
+     * @return void
      */
     public function addLista(Request $request)
     {
@@ -107,14 +105,12 @@ class listasController extends protectedUserNullController
         // - _aleatorio          -> inexistente No registrado
 
         $lista = new Listas();
-
+        // - Usuario registrado/premium/admin
         if ($this->user) {
-
             if ($this->user->role == 0 || $this->user->role == 2) {
                 $lista->url = $this->user->name . '_' . $request->url;
 
             } else if ($this->user->role == 1) {
-
                 $lista->url = $this->user->name . '_' . $this->random();
 
             } else {
@@ -137,43 +133,36 @@ class listasController extends protectedUserNullController
             if ($this->user->listas()->save($lista)) {
                 return response()->json([
                     'message' => 'Lista creada correctamente',
-                    'lista' => $lista,
-                ]);
+                    'lista' => $lista]);
             } else {
-                return response()->json([
-                    'message' => 'Error la lista no se ha creado',
-                ], 500);
+                return response()->json(['message' => 'Error la lista no se ha creado'], 500);
             }
 
+            // - Usuario no registrado
         } else {
-
             $lista->url = '_' . $this->random();
-
             $lista->titulo = $request->titulo;
             $lista->descripcion = $request->descripcion;
-
             $lista->passwordLista = null;
-
             $lista->elementos = json_encode($request->elementos);
 
             if ($lista->save()) {
                 return response()->json([
                     'message' => 'Lista creada correctamente',
-                    'lista' => $lista,
-                ]);
+                    'lista' => $lista]);
             } else {
-                return response()->json([
-                    'message' => 'Error la lista no se ha creado',
-                ], 500);
+                return response()->json(['message' => 'Error la lista no se ha creado'], 500);
             }
         }
-
-        return response()->json([
-            'message' => 'Error grave',
-        ], 500);
-
+        return response()->json(['message' => 'Error grave'], 500);
     }
 
+    /**
+     * random
+     * Summary: Crea un string random para la url
+     *
+     * @return void
+     */
     public function random()
     {
 
@@ -187,30 +176,35 @@ class listasController extends protectedUserNullController
     }
 
     /**
-     *  - EDITLISTA
-     * - Edita una lista por id -> user
+     * editLista
+     * Summary: Edita una lista, si contiene contraseña se solictara
+     * Depende del tipo de usuario: Rol(0,1,2) tendra unas opciones u otras
+     * Podran editar _todos_ el titulo, asunto y elementos
+     *
+     * @param  mixed $url       - Url para buscar la lista
+     * @param  mixed $request   - Datos que recibe
+     *
+     * @return void
      */
     public function editLista($url, Request $request)
     {
         $urlRecibida = Listas::where('url', $url)->select('id')->get();
         $auxLista = json_decode($urlRecibida);
         if (empty($auxLista[0]->id)) {
-            return response()->json([
-                'message' => 'Error ¿existe la lista?',
-            ]);
+            return response()->json(['message' => 'Error ¿existe la lista?']);
         }
         $idLista = $auxLista[0]->id;
-
         $lista = Listas::find($idLista);
 
+        // - Si tiene contraseña
         if ($lista->passwordLista != null) {
             if (password_verify($request->listaAuth, $lista->passwordLista)) {
                 $lista = $this->editar($idLista, $request);
             } else {
-                return response()->json([
-                    'message' => 'Error, indique la contraseña de la lista',
-                ]);
+                return response()->json(['message' => 'Error, indique la contraseña de la lista']);
             }
+
+            // - Si NO tiene contraseña
         } else {
             $lista = $this->editar($idLista, $request);
         }
@@ -218,19 +212,27 @@ class listasController extends protectedUserNullController
         if ($lista->update()) {
             return response()->json([
                 'message' => 'Lista modificada correctamente',
-                'lista' => $lista,
-            ]);
+                'lista' => $lista]);
         } else {
-            return response()->json([
-                'message' => 'Error la lista no se ha creado',
-            ], 500);
+            return response()->json(['message' => 'Error la lista no se ha creado'], 500);
         }
     }
 
+    /**
+     * editar
+     * Summary: Funcion de editar II
+     * Aqui se edita el contenido de la lista dependiendo del ususario
+     *
+     * @param  mixed $idLista  - ID para buscar la lista
+     * @param  mixed $request  - Datos recibidos
+     *
+     * @return void
+     */
     public function editar($idLista, $request)
     {
         $lista = Listas::find($idLista);
 
+        //USUARIO
         if ($this->user) {
 
             $lista->url = $lista->url;
@@ -259,6 +261,7 @@ class listasController extends protectedUserNullController
 
             return $lista;
 
+            // NO REGISTRADO
         } else {
 
             $lista->url = $lista->url;
@@ -272,33 +275,29 @@ class listasController extends protectedUserNullController
     }
 
     /**
-     *  - Del Lista
-     * - Elimina una lista por el id si la tiene el user -> user
+     * delList
+     * Summary: Elimina una lista si es el creador de ella
+     * Las listas sin creador las elimina el admin
+     *
+     * @param  mixed $url -Url(id) para buscar la lista
+     *
+     * @return void
      */
     public function delList($url)
     {
-
         $urlRecibida = Listas::where('url', $url)->select('id')->get();
         $auxLista = json_decode($urlRecibida);
-
         if (empty($auxLista[0]->id)) {
-            return response()->json([
-                'message' => 'Error ¿existe la lista?',
-            ]);
+            return response()->json(['message' => 'Error ¿existe la lista?']);
         }
         $idLista = $auxLista[0]->id;
-
         $lista = $this->user->listas()->find($idLista);
 
         if ($lista) {
             $lista->delete();
-            return response()->json([
-                'message' => 'Lista eliminada correctamente',
-            ]);
+            return response()->json(['message' => 'Lista eliminada correctamente']);
         } else {
-            return response()->json([
-                'message' => 'Error la lista no se ha eliminado, eres el creador',
-            ], 500);
+            return response()->json(['message' => 'Error la lista no se ha eliminado, eres el creador'], 500);
         }
     }
 }

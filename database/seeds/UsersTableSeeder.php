@@ -6,11 +6,16 @@ use Illuminate\Support\Facades\Hash;
 
 class UsersTableSeeder extends Seeder
 {
+
     /**
-     *  - Inserta los datos en la tabla
+     * run
+     * Summary: Inserta los datos en la tabla
+     *
+     * @return void
      */
     public function run()
     {
+        // - ADMINS -----------------------------------------------------
         DB::table('users')->insert([
             'name' => 'borja',
             'email' => 'borja@gmail.com',
@@ -29,6 +34,16 @@ class UsersTableSeeder extends Seeder
             'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
 
+        DB::table('users')->insert([
+            'name' => 'alejandro',
+            'email' => 'alejandro@gmail.com',
+            'password' => Hash::make('1234'),
+            'role' => 0,
+            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+        ]);
+
+        // - USERS -----------------------------------------------------
         DB::table('users')->insert([
             'name' => 'registrado',
             'email' => 'registrado@gmail.com',

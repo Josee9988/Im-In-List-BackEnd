@@ -13,29 +13,20 @@ class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
-    /**
-     *  - Atributos
-     */
-    protected $fillable = [
-        'name', 'email', 'password', 'role', 'listasCreadas', 'listasParticipiantes',
-    ];
+    // - Atributos
+    protected $fillable = ['name', 'email', 'password', 'role', 'listasCreadas', 'listasParticipiantes'];
+
+    // - Atributos escondidos del array
+    protected $hidden = ['password', 'remember_token'];
+
+    // - Casteo nativo
+    protected $casts = ['email_verified_at' => 'datetime'];
 
     /**
-     *  - Atributos escondidos del array
-     */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
-
-    /**
-     *  - Casteo nativo
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
-
-    /**
-     *  - Coge el identificador que guardara el token del user
+     * getJWTIdentifier
+     *  Summary: Coge el identificador que guardara el token del user
+     *
+     * @return void
      */
     public function getJWTIdentifier()
     {
@@ -43,7 +34,10 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
-     *  - Devuelve la key deñ array, agegada de JWT
+     * getJWTCustomClaims
+     * Summary: Devuelve la key deñ array, agegada de JWT
+     * 
+     * @return void
      */
     public function getJWTCustomClaims()
     {
@@ -51,7 +45,10 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
-     *  - Relacion con del user con la lista (user_id) creada
+     * listas
+     * Summary: Relacion con del user con la lista (user_id) creada
+     *
+     * @return void
      */
     public function listas()
     {

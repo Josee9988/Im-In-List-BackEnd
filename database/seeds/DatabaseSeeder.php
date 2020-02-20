@@ -4,8 +4,12 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
+
     /**
-     *  - Llama a los seeders ('parent')
+     * run
+     * Summary: Llama a los seeders ('parent')
+     * 
+     * @return void
      */
     public function run()
     {

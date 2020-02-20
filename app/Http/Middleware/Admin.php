@@ -7,11 +7,14 @@ use Closure;
 class Admin
 {
     /**
-     * Handle an incoming request.
+     * handle
+     * Summary: Middleware admin, quien acceda a las rutas 
+     * especificas del admin sin serlo, sera redireccionado a un error 
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
+     * @param  mixed $request - Usuario para saber si es un usuario y su rol
+     * @param  mixed $next    - Lo ejecutara si es correcto
+     *
+     * @return void
      */
     public function handle($request, Closure $next)
     {

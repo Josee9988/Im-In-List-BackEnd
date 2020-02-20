@@ -16,7 +16,12 @@ class contactoAdmin extends Mailable
     public $asunto;
 
     /**
-     * Create a new message instance.
+     * __construct
+     * Summary: Crea una nueva instancia de mensaje con las variables recibidas
+     *
+     * @param  mixed $email    - Email del usuario que recibe
+     * @param  mixed $mensaje  - Mensaje del usuario
+     * @param  mixed $asunto   - Asunto del mail del usuario
      *
      * @return void
      */
@@ -28,9 +33,10 @@ class contactoAdmin extends Mailable
     }
 
     /**
-     * Build the message.
+     * build
+     * Summary: Coje los datos recibidos y mediante una vista se envia el mail
      *
-     * @return $this
+     * @return void
      */
     public function build()
     {

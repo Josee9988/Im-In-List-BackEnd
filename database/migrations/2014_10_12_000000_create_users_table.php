@@ -7,8 +7,12 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateUsersTable extends Migration
 {
+
     /**
-     *  - Estructura de las tablas
+     * up
+     * Summary: Estructura de la tabla de usuarios
+     *
+     * @return void 
      */
     public function up()
     {
@@ -25,7 +29,10 @@ class CreateUsersTable extends Migration
     }
 
     /**
-     * - Elimina tabla
+     * down
+     * Summary: Elimina la tabla
+     *
+     * @return void
      */
     public function down()
     {
