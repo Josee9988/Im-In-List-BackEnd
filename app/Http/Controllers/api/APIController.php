@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
@@ -24,6 +25,16 @@ class APIController extends Controller
     {
         $peticionUrl = file_get_contents($this->url . '?secret=' . $this->private_key . '&response=' . $request->captcha);
         $estadoCaptcha = json_decode($peticionUrl)->success;
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|min:4|max:60',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:4|',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
+        }
 
         if ($estadoCaptcha) {
             $user = new User();

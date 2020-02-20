@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\contactoAdmin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 
 class emailController extends Controller
 {
@@ -22,6 +23,15 @@ class emailController extends Controller
     {
         $peticionUrl = file_get_contents($this->url . '?secret=' . $this->private_key . '&response=' . $request->captcha);
         $estadoCaptcha = json_decode($peticionUrl)->success;
+
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:4|',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
+        }
 
         if ($estadoCaptcha) {
             Mail::to('admiminlist@gmail.com')

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Listas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 /**
  *  - Extiende de controlador padre
@@ -100,15 +101,27 @@ class listasController extends protectedUserNullController
      */
     public function addLista(Request $request)
     {
-        // - usuario_personalida -> 2 Premium
-        // - usuario_aleatorio   -> 1 Registrado
-        // - _aleatorio          -> inexistente No registrado
+
+        $validator = Validator::make($request->all(), [
+            'titulo' => 'required|string|min:4|max:60',
+            'descripcion' => 'required|string|min:4|max:60',
+            'passwordLista ' => 'string|min:4',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
+        }
 
         $lista = new Listas();
         // - Usuario registrado/premium/admin
         if ($this->user) {
             if ($this->user->role == 0 || $this->user->role == 2) {
                 $lista->url = $this->user->name . '_' . $request->url;
+
+                $listas = Listas::where('url', $lista->url)->select('id')->get();
+                if ($listas) {
+                    return response()->json(['message' => 'Error url existente'], 400);
+                }
 
             } else if ($this->user->role == 1) {
                 $lista->url = $this->user->name . '_' . $this->random();
