@@ -25,8 +25,9 @@ class emailController extends Controller
         $estadoCaptcha = json_decode($peticionUrl)->success;
 
         $validator = Validator::make($request->all(), [
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:4|',
+            'asunto' => 'required|string|min:6|max:80',
+            'mensaje' => 'required|string|min:10|max:516',
+            'email' => 'required|string|email|max:255',
         ]);
 
         if ($validator->fails()) {
