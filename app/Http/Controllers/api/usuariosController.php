@@ -89,7 +89,7 @@ class usuariosController extends protectedUserController
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|min:4|max:60',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:4|',
+            'password' => 'string|min:4|',
             'role' => 'required'
         ]);
 
