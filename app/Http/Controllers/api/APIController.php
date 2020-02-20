@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\api;
-use App\Http\Controllers\Controller;
 
+use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -13,13 +13,12 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 class APIController extends Controller
 {
     /**
-     * @var bool
-     */
-    //public $loginAfterSignUp = true;
-
-    /**
-     *  - R E G I S T E R
-     * - Crea un usuario y le crea un token
+     * register
+     * Summary: Crea un usuario y le genera un token
+     *
+     * @param  mixed $request -Datos que recibe para crear un usuario
+     *
+     * @return void
      */
     public function register(Request $request)
     {
@@ -39,16 +38,18 @@ class APIController extends Controller
             return response()->json(compact('user', 'token'), 201);
 
         } else {
-            return response()->json([
-                'message' => 'Error, Actividad sospechosa',
-            ]);
+            return response()->json(['message' => 'Error, Actividad sospechosa']);
         }
-
+        return response()->json(['message' => 'Error, No se ha registrado el usuario']);
     }
 
     /**
-     *  - L O G I N
-     * - Si email y password son correctos se genera el token
+     * login
+     * Summary: Si email y password son correctos se genera el token
+     *
+     * @param  mixed $request
+     *
+     * @return void
      */
     public function login(Request $request)
     {
@@ -57,83 +58,52 @@ class APIController extends Controller
 
         if (!$token = JWTAuth::attempt($input)) {
             return response()->json([
-                'message' => '- Error de login, password o email incorrectos',
-            ], 401);
+                'message' => '- Error de login, password o email incorrectos'], 401);
         }
 
-        return response()->json([
-            'token' => $token,
-        ]);
+        return response()->json(['token' => $token]);
     }
 
     /**
-     *  - R E F R E S H
+     * refreshToken
+     * Summary: Refresca el token, (genera uno nuevo)
+     *
+     * @return void
      */
     public function refreshToken()
     {
         $token = JWTAuth::getToken();
-
         try {
             $token = JWTAuth::refresh($token);
-            return response()->json([
-                'token' => $token,
-            ], 200);
+            return response()->json(['token' => $token], 200);
 
         } catch (TokenExpiredException $e) {
-            return response()->json([
-                'message' => 'Vuelve al login',
-            ], 422);
+            return response()->json(['message' => 'Vuelve al login'], 422);
         }
     }
 
     /**
-     *  - AUTHENTICATE
+     * getAuthenticatedUser
+     * Summary: Devuelve el usuario logeado
+     *
+     * @return void
      */
     public function getAuthenticatedUser()
     {
         try {
-
             if (!$user = JWTAuth::parseToken()->authenticate()) {
                 return response()->json(['usuario no encontrado'], 404);
             }
-
         } catch (TokenExpiredException $e) {
-
             return response()->json(['Token_expirado']);
 
         } catch (TokenInvalidException $e) {
-
             return response()->json(['Token_invalido']);
 
         } catch (JWTException $e) {
-
             return response()->json(['token_absent']);
-
         }
-
         return response()->json(compact('user'));
-    }
-
-    /**
-     *  - L O G O U T (FRONT)
-     */
-    public function logout(Request $request)
-    {
-        $this->validate($request, [
-            'token' => 'required',
-        ]);
-
-        if (JWTAuth::invalidate($request->token)) {
-            return response()->json([
-                'message' => 'User logged out successfully',
-            ]);
-            $request->token->delete();
-        } else {
-
-            return response()->json([
-                'message' => 'Sorry, the user cannot be logged out',
-            ], 500);
-        }
     }
 
 }

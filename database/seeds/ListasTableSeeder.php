@@ -6,8 +6,11 @@ use Illuminate\Support\Facades\Hash;
 
 class ListasTableSeeder extends Seeder
 {
+    
     /**
-     *  - Inserta los datos en la tabla
+     * run
+     * Summary: Inserta los datos en la tabla
+     * @return void
      */
     public function run()
     {
@@ -55,6 +58,12 @@ class ListasTableSeeder extends Seeder
 
     }
 
+    /**
+     * random
+     * Summary: Crea un string random para la url
+     *
+     * @return void
+     */
     public function random()
     {
 

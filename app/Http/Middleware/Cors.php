@@ -6,12 +6,16 @@ use Closure;
 
 class Cors
 {
+
     /**
-     * Handle an incoming request.
+     * handle
+     *  - NO funciona, mediante componente
+     * Summary: Permite que se realicen consultas desde fuera
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
+     * @param  mixed $request
+     * @param  mixed $next
+     *
+     * @return void
      */
     public function handle($request, Closure $next)
     {

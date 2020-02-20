@@ -7,16 +7,19 @@ use Illuminate\Support\Facades\Schema;
 class CreateListasTable extends Migration
 {
     /**
-     *  - Estructura de las tablas
+     * up
+     * Summary: Estructura de la tabla de listas
+     *
+     * @return void
      */
     public function up()
     {
         Schema::create('listas', function (Blueprint $table) {
             $table->bigIncrements('id');
-            
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
 
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')
+            ->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->string('url')->unique();
             $table->string('titulo')->nullable()->default('Nuevo_Titulo');
             $table->string('descripcion')->nullable()->default('Nueva_descripcion');
@@ -28,7 +31,10 @@ class CreateListasTable extends Migration
     }
 
     /**
-     * - Elimina tabla
+     * down
+     * Summary: Elimina la tabla
+     *
+     * @return void
      */
     public function down()
     {

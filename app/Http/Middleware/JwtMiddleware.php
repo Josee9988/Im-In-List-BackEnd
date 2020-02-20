@@ -11,11 +11,15 @@ class JwtMiddleware extends BaseMiddleware
 {
 
     /**
-     * Handle an incoming request.
+     * handle
+     * Summary: Middleware de JWT, para verificar un grupo de rutas
+     * para usuarios con token.
+     *  Tambien se controla el token
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
+     * @param  mixed $request
+     * @param  mixed $next
+     *
+     * @return void
      */
     public function handle($request, Closure $next)
     {
@@ -36,8 +40,6 @@ class JwtMiddleware extends BaseMiddleware
             if ($e instanceof \Tymon\JWTAuth\Exceptions\JWTException) {
                 return response()->json(['status' => 'Token inexistente'], 401);
             }
-
-            
 
         }
         return $next($request);

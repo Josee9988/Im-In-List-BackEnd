@@ -14,8 +14,10 @@ class protectedUserController extends Controller
     protected $user;
 
     /**
-     * ListasController constructor.
-     *  - Control del token del usuario
+     * __construct
+     * Summary: Controla el token del usuario
+     *
+     * @return void
      */
     public function __construct()
     {
@@ -27,14 +29,10 @@ class protectedUserController extends Controller
             if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
                 return response()->json(['status' => 'Token invalido'], 401);
             }
-
             if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
                 return response()->json(['status' => 'Token expirado'], 401);
             }
-
             return response()->json(['status' => 'Token inexistente'], 401);
-
         }
-
     }
 }

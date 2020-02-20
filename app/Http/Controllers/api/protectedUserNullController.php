@@ -14,19 +14,17 @@ class protectedUserNullController extends Controller
     protected $user;
 
     /**
-     * ListasController constructor.
-     *  - Control del token del usuario
+     * __construct
+     * Summary: Controla si el usuario tiene token o no
+     *
+     * @return void
      */
     public function __construct()
     {
         try {
             $this->user = JWTAuth::parseToken()->authenticate();
-
         } catch (Exception $e) {
-
             $this->user = null;
-
         }
-
     }
 }

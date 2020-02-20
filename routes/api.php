@@ -4,12 +4,14 @@ use Illuminate\Support\Facades\Route;
 
 // - C O R S -> activado para todas las rutas
 
+// - Enviar email desde fuera
 Route::post('sendEmail', 'api\emailController@gestionEmail');
 
+// - Login y registro
 Route::post('login', 'api\APIController@login');
 Route::post('register', 'api\APIController@register');
 
-// - Gestion de listas para los usuarios
+// - Gestion de listas
 Route::get('listas', 'api\listasController@getLista');
 Route::get('listas/{url}', 'api\listasController@infoLista');
 Route::get('listas/{url}/{listaAuth}', 'api\listasController@infoListaPassword');
@@ -17,9 +19,10 @@ Route::post('listas', 'api\listasController@addLista');
 Route::put('listas/{url}', 'api\listasController@editLista');
 Route::delete('listas/{url}', 'api\listasController@delList');
 
-// - Autenticados requiere -> token
+// - Autenticados requiere -> TOKEN
 Route::group(['middleware' => 'auth.jwt'], function () {
 
+    // - Refresh
     Route::get('refresh', 'api\APIController@refreshToken');
 
     // - Datos del usuario logeado
@@ -33,7 +36,7 @@ Route::group(['middleware' => 'auth.jwt'], function () {
     // - Admin
     Route::group(['middleware' => 'admin'], function () {
 
-        // - Rutas de admin frente a todas las listas
+        // - Admin, gestion de todas las listas
         Route::get('listasAdmin', 'api\adminController@getListasAdmin');
         //Route::post('listasAdmin', 'api\adminController@addLista');
         Route::get('listasAdmin/{url}', 'api\adminController@infoListaAdmin');
