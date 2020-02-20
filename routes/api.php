@@ -31,7 +31,10 @@ Route::group(['middleware' => 'auth.jwt'], function () {
     // - Para poder editar el usuario
     Route::put('users/{id}', 'api\usuariosController@editUser');
 
+    // - PayPal
     Route::get('pago', 'api\paymentController@execute');
+
+    Route::post('crearPago', 'api\paymentController@create');
 
     // - Admin
     Route::group(['middleware' => 'admin'], function () {
