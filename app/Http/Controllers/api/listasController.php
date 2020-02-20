@@ -113,15 +113,17 @@ class listasController extends protectedUserNullController
         }
 
         $lista = new Listas();
+
         // - Usuario registrado/premium/admin
         if ($this->user) {
             if ($this->user->role == 0 || $this->user->role == 2) {
-                $lista->url = $this->user->name . '_' . $request->url;
 
-                $listas = Listas::where('url', $lista->url)->select('id')->get();
-                if ($listas) {
+                $listasURL = Listas::where('url', $lista->url )->select('url')->get()->toArray();
+                if (!empty($listasURL)) {
                     return response()->json(['message' => 'Error url existente'], 400);
                 }
+
+                $lista->url = $this->user->name . '_' . $request->url;
 
             } else if ($this->user->role == 1) {
                 $lista->url = $this->user->name . '_' . $this->random();
