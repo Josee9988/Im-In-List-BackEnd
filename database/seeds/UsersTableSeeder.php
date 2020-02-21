@@ -49,7 +49,7 @@ class UsersTableSeeder extends Seeder
             'email' => 'registrado@gmail.com',
             'password' => Hash::make('1234'),
             'role' => 1,
-            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            'created_at' => '2020-01-01',
             'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
 
@@ -76,7 +76,7 @@ class UsersTableSeeder extends Seeder
             'email' => 'registrado4@gmail.com',
             'password' => Hash::make('1234'),
             'role' => 1,
-            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            'created_at' => '2020-03-01',
             'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
 
@@ -103,7 +103,7 @@ class UsersTableSeeder extends Seeder
             'email' => 'premium3@gmail.com',
             'password' => Hash::make('1234'),
             'role' => 2,
-            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            'created_at' => '2020-01-01',
             'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
 
@@ -112,7 +112,7 @@ class UsersTableSeeder extends Seeder
             'email' => 'premium4@gmail.com',
             'password' => Hash::make('1234'),
             'role' => 2,
-            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            'created_at' => '2020-03-01',
             'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
 
