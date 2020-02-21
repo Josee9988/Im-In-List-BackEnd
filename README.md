@@ -10,7 +10,15 @@ En esta parte veremos el funcionamiento interno de la api, y como se ha desarrol
 
 ## **API** 🔩
 
+El proyecto actuara con la *API* desde un front hecho por dos integrantes del proyecto integrador. Revisa la [documentación del Front](https://github.com/Josee9988/Im-In-List-FrontEnd)
 
+Constara de varios controladores: gestión de usuarios, donde solo el admin sera el único que podrá interactuar con los usuarios ya que estará gestionado por un middleware, (excepto una ruta especifica de edición de usuarios).
+Gestión de listas, esta es la más amplia ya que puede interactuar todo el mundo incluso sin estar registrado, dependiendo del tipo del usuario tendrá unas opciones al crear la lista por ejemplo:
+ - No registrados: solo podrán crear una agregando titulo,descripción y elementos de la lista, se creara una url random para acceder
+- Registrados: podrán crear listas igual que los no registrados, pero la url sera diferente ya que sé coger el nombre del usuario más un random
+
+- Premium: podrán poner contraseñas a las listas y personalizar la url con el titulo de la lista
+Habrá una ruta de contacto donde se podrá enviar un email al administrador por si algún usuario tiene que realizar cualquier pregunta
 
 ---
 
