@@ -1,7 +1,3 @@
-<p align="center">
-<img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status">
-</p>
-
 # **ImInList** - Tu aplicación de listas desde dentro
 
 **I'm In List** es una aplicación la cual se ha desarrollado para facilitar la gestión y organización de todos los usuarios, creando una aplicación sencilla y amigable para que todo el publico pueda hacer uso de ella.
