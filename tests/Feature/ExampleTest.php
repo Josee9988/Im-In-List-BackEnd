@@ -15,7 +15,19 @@ class ExampleTest extends TestCase
     public function testBasicTest()
     {
         $response = $this->get('/');
-
         $response->assertStatus(200);
+    }
+    public function testseeRoutes(){
+        
+        $login = $this->get('/listas');
+        $login->assertStatus(200);
+        $login->assertSee('Address');        
+        $login->assertSee('Iniciar');
+        $login->assertSee('Email');
+        $login->assertSee('Password');
+
+        
+
+
     }
 }

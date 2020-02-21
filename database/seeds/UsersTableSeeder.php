@@ -49,7 +49,7 @@ class UsersTableSeeder extends Seeder
             'email' => 'registrado@gmail.com',
             'password' => Hash::make('1234'),
             'role' => 1,
-            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            'created_at' => '2020-01-01',
             'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
 
