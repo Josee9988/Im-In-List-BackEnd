@@ -41,7 +41,6 @@ class ListasTableSeeder extends Seeder
             'URL' => 'Registrado_' . $this->random(),
             'titulo' => 'Lista Registrado',
             'descripcion' => 'La lista de Registradp',
-            'passwordLista' => Hash::make('1234'),
             'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
             'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
