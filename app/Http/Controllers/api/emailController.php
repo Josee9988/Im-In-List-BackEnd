@@ -37,6 +37,7 @@ class emailController extends Controller
         if ($estadoCaptcha) {
             Mail::to('admiminlist@gmail.com')
                 ->send(new contactoAdmin($request->email, $request->mensaje, $request->asunto));
+            return response()->json(['message' => 'Email Enviado'], 200);
         } else {
             return response()->json(['message' => 'Error, Actividad sospechosa']);
         }
