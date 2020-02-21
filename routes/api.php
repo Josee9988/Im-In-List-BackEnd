@@ -41,7 +41,6 @@ Route::group(['middleware' => 'auth.jwt'], function () {
 
         // - Admin, gestion de todas las listas
         Route::get('listasAdmin', 'api\adminController@getListasAdmin');
-        //Route::post('listasAdmin', 'api\adminController@addLista');
         Route::get('listasAdmin/{url}', 'api\adminController@infoListaAdmin');
         Route::put('listasAdmin/{url}', 'api\adminController@editListaAdmin');
         Route::delete('listasAdmin/{url}', 'api\adminController@delListAdmin');
