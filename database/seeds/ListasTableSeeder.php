@@ -21,7 +21,7 @@ class ListasTableSeeder extends Seeder
             'descripcion' => 'La lista de Borja',
             'passwordLista' => Hash::make('1234'),
             'elementos' => str_replace("'", "\'", json_encode(['Comprar platanos', 'Comprar Melocotones'])),
-            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            'created_at' => '2020-01-01',
             'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
 
@@ -32,7 +32,7 @@ class ListasTableSeeder extends Seeder
             'descripcion' => 'La lista de Jose',
             'passwordLista' => Hash::make('1234'),
             'elementos' => str_replace("'", "\'", json_encode(['Comprar agua', 'Comprar lapices'])),
-            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            'created_at' => '2020-03-01',
             'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
 
@@ -52,7 +52,7 @@ class ListasTableSeeder extends Seeder
             'titulo' => 'Lista JOSE 2',
             'descripcion' => 'La lista de OJSE',
             'passwordLista' => Hash::make('1234'),
-            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            'created_at' => '2020-04-01',
             'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
 
