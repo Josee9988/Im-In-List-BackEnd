@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\contactoAdmin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 
 class emailController extends Controller
 {
@@ -23,9 +24,20 @@ class emailController extends Controller
         $peticionUrl = file_get_contents($this->url . '?secret=' . $this->private_key . '&response=' . $request->captcha);
         $estadoCaptcha = json_decode($peticionUrl)->success;
 
+        $validator = Validator::make($request->all(), [
+            'asunto' => 'required|string|min:6|max:80',
+            'mensaje' => 'required|string|min:10|max:516',
+            'email' => 'required|string|email|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+
         if ($estadoCaptcha) {
             Mail::to('admiminlist@gmail.com')
                 ->send(new contactoAdmin($request->email, $request->mensaje, $request->asunto));
+            return response()->json(['message' => 'Email Enviado'], 200);
         } else {
             return response()->json(['message' => 'Error, Actividad sospechosa']);
         }

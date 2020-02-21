@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Listas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 /**
  *  - Extiende de controlador padre
@@ -100,61 +101,80 @@ class listasController extends protectedUserNullController
      */
     public function addLista(Request $request)
     {
-        // - usuario_personalida -> 2 Premium
-        // - usuario_aleatorio   -> 1 Registrado
-        // - _aleatorio          -> inexistente No registrado
+
+        $validator = Validator::make($request->all(), [
+            'titulo' => 'required|string|min:4|max:60',
+            'descripcion' => 'required|string|min:4|max:60',
+            'passwordLista ' => 'string|min:4',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+
+        $peticionUrl = file_get_contents($this->url . '?secret=' . $this->private_key . '&response=' . $request->captcha);
+        $estadoCaptcha = json_decode($peticionUrl)->success;
 
         $lista = new Listas();
-        // - Usuario registrado/premium/admin
-        if ($this->user) {
-            if ($this->user->role == 0 || $this->user->role == 2) {
-                $lista->url = $this->user->name . '_' . $request->url;
 
-            } else if ($this->user->role == 1) {
-                $lista->url = $this->user->name . '_' . $this->random();
+        if ($estadoCaptcha) {
+            // - Usuario registrado/premium/admin
+            if ($this->user) {
+                if ($this->user->role == 0 || $this->user->role == 2) {
 
+                    $lista->url = $this->user->name . '_' . $request->url;
+                    $listasURL = Listas::where('url', $lista->url)->select('url')->get()->toArray();
+                    if (!empty($listasURL)) {
+                        return response()->json(['message' => 'Error url existente'], 400);
+                    }
+
+                } else if ($this->user->role == 1) {
+                    $lista->url = $this->user->name . '_' . $this->random();
+
+                } else {
+                    $lista->url = '_' . $this->random();
+                }
+
+                $lista->titulo = $request->titulo;
+                $lista->descripcion = $request->descripcion;
+
+                if (!empty($request->passwordLista)) {
+                    if ($this->user->role == 0 || $this->user->role == 2) {
+                        $lista->passwordLista = Hash::make($request->passwordLista);
+                    }
+                } else {
+                    $lista->passwordLista = null;
+                }
+
+                $lista->elementos = json_encode($request->elementos);
+
+                if ($this->user->listas()->save($lista)) {
+                    return response()->json([
+                        'message' => 'Lista creada correctamente',
+                        'lista' => $lista]);
+                } else {
+                    return response()->json(['message' => 'Error la lista no se ha creado'], 500);
+                }
+
+                // - Usuario no registrado
             } else {
                 $lista->url = '_' . $this->random();
-            }
-
-            $lista->titulo = $request->titulo;
-            $lista->descripcion = $request->descripcion;
-
-            if (!empty($request->passwordLista)) {
-                if ($this->user->role == 0 || $this->user->role == 2) {
-                    $lista->passwordLista = Hash::make($request->passwordLista);
-                }
-            } else {
+                $lista->titulo = $request->titulo;
+                $lista->descripcion = $request->descripcion;
                 $lista->passwordLista = null;
+                $lista->elementos = json_encode($request->elementos);
+
+                if ($lista->save()) {
+                    return response()->json([
+                        'message' => 'Lista creada correctamente',
+                        'lista' => $lista]);
+                } else {
+                    return response()->json(['message' => 'Error la lista no se ha creado'], 500);
+                }
             }
-
-            $lista->elementos = json_encode($request->elementos);
-
-            if ($this->user->listas()->save($lista)) {
-                return response()->json([
-                    'message' => 'Lista creada correctamente',
-                    'lista' => $lista]);
-            } else {
-                return response()->json(['message' => 'Error la lista no se ha creado'], 500);
-            }
-
-            // - Usuario no registrado
-        } else {
-            $lista->url = '_' . $this->random();
-            $lista->titulo = $request->titulo;
-            $lista->descripcion = $request->descripcion;
-            $lista->passwordLista = null;
-            $lista->elementos = json_encode($request->elementos);
-
-            if ($lista->save()) {
-                return response()->json([
-                    'message' => 'Lista creada correctamente',
-                    'lista' => $lista]);
-            } else {
-                return response()->json(['message' => 'Error la lista no se ha creado'], 500);
-            }
+            return response()->json(['message' => 'Error grave I'], 500);
         }
-        return response()->json(['message' => 'Error grave'], 500);
+        return response()->json(['message' => 'Error, Actividad sospechosa']);
     }
 
     /**

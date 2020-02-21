@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 /**
  *  - Extiende de controlador padre
@@ -83,6 +84,17 @@ class usuariosController extends protectedUserController
         if (!$id || !$usuario) {
             return response()->json([
                 'message' => 'Error la usuario con el ' . $id . ' no se ha encontrado'], 400);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|min:4|max:60',
+            'email' => 'required|string|email|max:255',
+            'password' => 'string|min:4|',
+            'role' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
         }
         // - Admin
         if ($this->user->role == 0) {
