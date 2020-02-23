@@ -12,13 +12,36 @@ En esta parte veremos el funcionamiento interno de la api, y como se ha desarrol
 
 El proyecto actuara con la *API* desde un front hecho por dos integrantes del proyecto integrador. Revisa la [documentación del Front](https://github.com/Josee9988/Im-In-List-FrontEnd)
 
-Constara de varios controladores: gestión de usuarios, donde solo el admin sera el único que podrá interactuar con los usuarios ya que estará gestionado por un middleware, (excepto una ruta especifica de edición de usuarios).
-Gestión de listas, esta es la más amplia ya que puede interactuar todo el mundo incluso sin estar registrado, dependiendo del tipo del usuario tendrá unas opciones al crear la lista por ejemplo:
- - No registrados: solo podrán crear una agregando titulo,descripción y elementos de la lista, se creara una url random para acceder
-- Registrados: podrán crear listas igual que los no registrados, pero la url sera diferente ya que sé coger el nombre del usuario más un random
+Constara de varios controladores: 
 
-- Premium: podrán poner contraseñas a las listas y personalizar la url con el titulo de la lista
+ - Gestión de usuarios:
+Únicamente el admin será el único que podrá interactuar con los usuarios ya que estará gestionado por un middleware, (excepto una ruta especifica de edición de usuarios).
+
+ - Gestión de listas:
+Esta es la más amplia ya que puede interactuar todo el mundo incluso sin estar registrado, dependiendo del tipo del usuario tendrá unas opciones al crear la lista por ejemplo:
+
+    - **No registrados:**
+Solo podrán crear una agregando titulo, descripción y elementos de la lista, se creara una url random para acceder.
+ 
+    - **Registrados:**
+Podrán crear listas igual que los no registrados, pero la url será diferente ya que sé coger el nombre del usuario más un random.
+
+    - **Premium:**
+Podrán poner contraseñas a las listas y personalizar la url con el titulo de la lista.
+
 Habrá una ruta de contacto donde se podrá enviar un email al administrador por si algún usuario tiene que realizar cualquier pregunta
+
+
+
+#### **Recursos**
+La versión de laravel con la cual se ha desarrollado la api es `"laravel/framework": "^6.2"`
+
+Para la autenticación de usuarios mediante token, se ha utilizado un cifrado [jwt-auth](https://jwt-auth.readthedocs.io/en/develop/) mediante el cual define una forma compacta y autónoma para transmitir información de forma segura entre las partes como un objeto JSON.
+Al ser laravel 6 la versión mas compatible actualmente es `"tymon/jwt-auth": "dev-develop"`ya que versiones anteriores estaban anticuadas a la versión actual de laravel.
+
+Para realizar consultas a la api externamente se ha instalado un componente `"fruitcake/laravel-cors": "^1.0"` que actuara como middleware donde permitirá las peticiones externas.
+ - Componente e mas información:
+ > [CORS](https://github.com/fruitcake/laravel-cors) 
 
 ---
 
@@ -31,6 +54,30 @@ Tenemos que tener preparado un entorno de desarrollo, en la documentación ofici
 #### **Codigo**
 
 Al ya tener el entorno de trabajo, se habrá de clonar el repositorio y realizar `composer update` para instalar las dependencias, habrá que apuntar a la ruta especificada en `Homestead.yaml` -> sites. Realizaremos `vagrant up` para hacer funcionar el servidor.
+
+---
+
+## **Despliegue**
+
+Se ha realizado el despliegue utilizando la herramienta [deployer](https://deployer.org/) que consiste en un archivo php que contiene definiciones de tareas, la tarea puede requerir otras tareas y ampliar o anular la funcionalidad.
+
+Mediante ssh se conectara a nuestro servidor en staging o en producción dependiendo de la ip especificada, el usuario **back** será el cual permitirá desplegar en nuestro servidor en la ruta `/var/www/html/ImInList-back` a partir de este repositorio.
+
+### Información servidores:
+ - #### Servidor staging:
+>IP: 54.243.26.179
+
+>URL: iminlist.back.staging.grupo04.ddaw.site
+
+>Usuario: back
+
+
+ - #### Servidor producción:
+>IP: 54.165.254.46
+
+>URL: iminlist.back.grupo04.ddaw.site
+
+>Usuario: back
 
 ---
 
@@ -50,7 +97,9 @@ La principal fuente de información ha sido obtenida de la documentación oficia
 
 Esta aplicación ha sido desarrollado por:
 
--   Alejandro Ortega → <alexoh500@gmail.com>
+- Alejandro Ortega → <alexoh500@gmail.com>
+- Jose Gracia → <jgracia9988@gmail.com>
+- Borja Pérez → <multibalcoy@gmail.com>
 
 ---
 
