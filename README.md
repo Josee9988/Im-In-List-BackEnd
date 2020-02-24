@@ -12,7 +12,7 @@ En esta parte veremos el funcionamiento interno de la api, y como se ha desarrol
 
 El proyecto actuara con la *API* desde un front hecho por dos integrantes del proyecto integrador. Revisa la [documentación del Front](https://github.com/Josee9988/Im-In-List-FrontEnd)
 
-Constara de varios controladores: 
+Constará de varios controladores: 
 
  - Gestión de usuarios:
 Únicamente el admin será el único que podrá interactuar con los usuarios ya que estará gestionado por un middleware, (excepto una ruta especifica de edición de usuarios).
